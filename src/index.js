@@ -101,7 +101,7 @@ const InputWrapper = styled.label`
 `;
 const FormInputWrapper = styled.label`
   position: relative;
-  display: block;
+  display: flex;
   padding: 10px;
   background-color: white;
   width: 67%;
@@ -119,8 +119,8 @@ const FormInputWrapper = styled.label`
 
   & .credit-card-input {
     border: 0px;
-    position: absolute;
-    width: 94%;
+    flex-shrink: 0;
+    width: 100%;
     font-size: 1em;
     ${({ inputStyled }) => ({ ...inputStyled })};
 
