@@ -1,31 +1,49 @@
-# React Credit Card Input
+# React Credit Card Kit
 
-> A credit/debit card input field for React
+[![npm version](https://badge.fury.io/js/react-credit-card-kit.svg)](https://badge.fury.io/js/react-credit-card-kit)
+[![Build Status](https://travis-ci.org/hungnt167/react-credit-card-kit.svg?branch=master)](https://travis-ci.org/hungnt167/react-credit-card-kit)
+
+> A credit/debit card kit for React , based on  [react-credit-card-input](https://github.com/medipass/react-credit-card-input)
 
 ## Example
 
 [Click here for an interactive demo](https://medipass.github.io/react-credit-card-input)
 
-![](./example.gif)
+![](https://raw.githubusercontent.com/hungnt167/react-credit-card-kit/master/one-field.gif)
+
+
+![](https://raw.githubusercontent.com/hungnt167/react-credit-card-kit/master/form.png)
 
 
 ## Install
 
 ```
-$ npm install --save react-credit-card-input
+$ npm install --save react-credit-card-kit
 ```
 
 
 ## Usage
 
 ```js
-import CreditCardInput from 'react-credit-card-input';
+import CreditCardInput from 'react-credit-card-kit';
 
 <CreditCardInput
   cardNumberInputProps={{ value: cardNumber, onChange: this.handleCardNumberChange }}
   cardExpiryInputProps={{ value: expiry, onChange: this.handleCardExpiryChange }}
   cardCVCInputProps={{ value: cvc, onChange: this.handleCardCVCChange }}
   fieldClassName="input"
+/>
+```
+
+
+```js
+import CreditCardForm from 'react-credit-card-kit';
+
+<CreditCardForm
+  cardNumberInputProps={{ value: cardNumber, onChange: this.handleCardNumberChange }}
+  cardExpiryInputProps={{ value: expiry, onChange: this.handleCardExpiryChange }}
+  cardCVCInputProps={{ value: cvc, onChange: this.handleCardCVCChange }}
+  afterValidateCard={(formIsValid) => {}}
 />
 ```
 
@@ -69,6 +87,7 @@ import CreditCardInput from 'react-credit-card-input';
   <tr><td>  handleCardExpiryBlur </td><td>Function</td> <td>Handle card expiry blur.</td></tr>
   <tr><td>  handleCardCVCChange </td><td>Function</td> <td>Handle card CVC change.</td></tr>
   <tr><td>  handleCardCVCBlur </td><td>Function</td> <td>Handle card CVC blur.</td></tr>
+  <tr><td>  afterValidateCard </td><td>Function</td> <td>Handle then form validate.</td></tr>
   <tr><td>  props </td><td>Object</td> <td>Input component props</td></tr>
 </tbody>
 </table>
@@ -102,30 +121,4 @@ import CreditCardInput from 'react-credit-card-input';
 />
 ```
 
-## Contributing
-
-Contributing to `react-credit-card-input` is easy! With four simple steps:
-
-### Create a branch
-
-1. Fork the repository
-1. `git clone <your-repo-url>` to clone your GitHub repo to your local one
-1. `git pull origin master` to pull the latest code
-1. `npm install` to install the project's dependencies
-1. `git checkout -b the-name-of-my-branch` to create a branch (use something short and comprehensible, such as: `fix-card-number-issue`).
-1. `git remote add upstream https://github.com/medipass/react-credit-card-input.git` and `git pull upstream master` to update your fork from this source.
-
-### Make the change
-
-Note: You can run `npm run storybook`, and then navigate to http://localhost:9001/ to interactively develop your changes. If you are developing a new feature, make sure to add a story for it!
-
-### Test the change
-1. Run `npm run fix` from the project root (This will run Prettier and ESLint and automatically fix any issues).
-
-### Push the change!
-1. `git add -A && git commit -m "My message (#issue-number/pr-number)"` (replacing `My message (#issue-number/pr-number)` with a commit message, such as `Fixed card number issue (#43)`) to stage and commit your changes
-1. `git push my-fork-name the-name-of-my-branch`
-
-## License
-
-MIT © [Medipass Solutions](https://medipass.com.au)
+## Cheers :)

@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import styled from 'styled-components';
-import CreditCardInput from '.';
+import CreditCardInput, { CreditCardForm } from '.';
 import './index.stories.css';
 
 const Container = styled.div`
@@ -88,6 +88,35 @@ storiesOf('CreditCardInput', module)
   .add('custom renderers', () => (
     <Container style={{ backgroundColor: '#f0f0f0' }}>
       <CreditCardInput
+        cardCVCInputRenderer={({ handleCardCVCChange, props }) => (
+          <input
+            {...props}
+            onChange={handleCardCVCChange(e => console.log('cvc change', e))}
+          />
+        )}
+        cardExpiryInputRenderer={({ handleCardExpiryChange, props }) => (
+          <input
+            {...props}
+            onChange={handleCardExpiryChange(e =>
+              console.log('expiry change', e)
+            )}
+          />
+        )}
+        cardNumberInputRenderer={({ handleCardNumberChange, props }) => (
+          <input
+            {...props}
+            onChange={handleCardNumberChange(e =>
+              console.log('number change', e)
+            )}
+          />
+        )}
+      />
+    </Container>
+  ))
+  .add('form', () => (
+    <Container style={{ backgroundColor: '#f0f0f0', width: '50%' }}>
+      <CreditCardForm
+        enableZipInput={false}
         cardCVCInputRenderer={({ handleCardCVCChange, props }) => (
           <input
             {...props}

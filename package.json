@@ -1,13 +1,12 @@
 {
-  "name": "react-credit-card-input",
-  "version": "1.0.7",
-  "description": "A credit/debit card input field for React",
+  "name": "react-credit-card-kit",
+  "version": "0.0.1",
+  "description": "A credit/debit card input / form field for React",
   "license": "MIT",
-  "repository": "github:medipass/react-credit-card-input",
+  "repository": "github:hungnt167/react-credit-card-kit",
   "author": {
-    "name": "jxom",
-    "email": "jake@medipass.io",
-    "url": "https://medipass.com.au"
+    "name": "rooney",
+    "email": "hungnt167@gmail.com"
   },
   "main": "lib/index.js",
   "keywords": [
