@@ -1,8 +1,9 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import styled from 'styled-components';
-import CreditCardInput, { CreditCardForm } from '.';
+import { CreditCardInput, CreditCardForm, CreditCardFullForm, CreditCardFormNPayViaEmail } from '.';
 import './index.stories.css';
+import './css/bootstrap.min.css';
 
 const Container = styled.div`
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
@@ -112,10 +113,12 @@ storiesOf('CreditCardInput', module)
         )}
       />
     </Container>
-  ))
-  .add('form', () => (
+  ));
+
+storiesOf('CreditCardForm', module)
+.add('full form', () => (
     <Container style={{ backgroundColor: '#f0f0f0', width: '50%' }}>
-      <CreditCardForm
+      <CreditCardFullForm
         enableZipInput={false}
         cardCVCInputRenderer={({ handleCardCVCChange, props }) => (
           <input
@@ -141,4 +144,21 @@ storiesOf('CreditCardInput', module)
         )}
       />
     </Container>
-  ));
+  ))
+.add('form', () => (
+    <Container style={{ backgroundColor: '#f0f0f0', width: '50%' }}>
+      <CreditCardForm
+        containerClassName="paypal-by"
+        enableZipInput={false}
+      />
+    </Container>
+  ))
+.add('form and pay via email', () => (
+    <Container style={{ backgroundColor: '#f0f0f0', width: '50%' }}>
+      <CreditCardFormNPayViaEmail
+        containerClassName="paypal-by"
+        controlClassName="checkpaypal-by"
+        enableZipInput={false}
+      />
+    </Container>
+  ))
