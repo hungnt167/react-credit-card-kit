@@ -12,10 +12,6 @@ import {
 	DangerText
 } from './utils/styles';
 
-
-const inputRenderer = ({ props }: Object) => <input {...props} />;
-
-
 export class CreditCardForm extends CreditCardInput {
 	render = () => {
     const { errorText, showZip } = this.state;
@@ -42,7 +38,7 @@ export class CreditCardForm extends CreditCardInput {
 					<div className={containerClassName} styled={containerStyle}>
 						<div className="form-group">
 	                        <label>Name on Card</label>
-							{inputRenderer({
+							{this.inputRenderer({
 				              props: {
 				                id: 'name-on-card',
 				                ref: cardNameField => {

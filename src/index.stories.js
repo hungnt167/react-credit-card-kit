@@ -159,6 +159,7 @@ storiesOf('CreditCardForm', module)
         containerClassName="paypal-by"
         controlClassName="checkpaypal-by"
         enableZipInput={false}
+        afterValidateCard={isValid => console.log(isValid)}
       />
     </Container>
   ))

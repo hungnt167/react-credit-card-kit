@@ -11,11 +11,6 @@ import {
 	DangerText
 } from './utils/styles';
 
-
-
-const inputRenderer = ({ props }: Object) => <input {...props} />;
-
-
 export class CreditCardFullForm extends CreditCardInput {
   render = () => {
     const {
@@ -64,7 +59,7 @@ export class CreditCardFullForm extends CreditCardInput {
             translateXForZip={true}
             data-max="9999"
           >
-            {inputRenderer({
+            {this.inputRenderer({
               props: {
                 id: 'name-on-card',
                 ref: cardNameField => {

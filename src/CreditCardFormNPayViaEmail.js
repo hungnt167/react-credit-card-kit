@@ -12,18 +12,73 @@ import {
 	DangerText
 } from './utils/styles';
 
-
-const inputRenderer = ({ props }: Object) => <input {...props} />;
-
-
 export class CreditCardFormNPayViaEmail extends CreditCardInput {
+	toggleMode = async () => {
+		await this.setState({
+			isCardMode: !this.state.isCardMode
+		});
+
+		const { afterValidateCard } = this.props;
+
+	    afterValidateCard && afterValidateCard(this.formIsValid());
+	};
+
+	isEmail = (email) => {
+	    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	    return re.test(String(email).toLowerCase());
+	}
+  
+
+    handleEmailBlur = (
+    { onBlur }: { onBlur?: ?Function } = { onBlur: null }
+  ) => (e: SyntheticInputEvent<*>) => {
+    if (!this.isEmail(e.target.value)) {
+      this.setFieldInvalid('email is invalid', {
+        state: 'ccEmailErrorText'
+      });
+    }
+
+    const { emailInputProps } = this.props;
+    emailInputProps.onBlur && emailInputProps.onBlur(e);
+    onBlur && onBlur(e);
+  };
+
+  handleEmailChange = (
+    { onChange }: { onChange?: ?Function } = { onChange: null }
+  ) => (e: SyntheticInputEvent<*>) => {
+    if (!this.isEmail(e.target.value)) {
+      this.setFieldInvalid('email is invalid', {
+        state: 'ccEmailErrorText'
+      });
+    } else {
+	    this.setFieldValid({ state: 'ccEmailErrorText' });
+    }
+
+    const { emailInputProps } = this.props;
+    emailInputProps.onChange && emailInputProps.onChange(e);
+    onChange && onChange(e);
+  };
+
+  handleEmailKeyPress = (e: any) => {
+  };
+
+
 	render = () => {
-    const { errorText, showZip } = this.state;
+    const { 
+    	showZip,
+    	ccNumberErrorText,
+		ccExpDateErrorText,
+		ccCIDErrorText,
+		ccZipErrorText,
+    	ccEmailErrorText
+	} = this.state;
     const {
       cardCVCInputProps,
       cardZipInputProps,
       cardExpiryInputProps,
       cardNumberInputProps,
+      cardNameInputProps,
+      emailInputProps,
       cardCVCInputRenderer,
       cardExpiryInputRenderer,
       cardNumberInputRenderer,
@@ -44,7 +99,9 @@ export class CreditCardFormNPayViaEmail extends CreditCardInput {
 			<Fragment>
 				<div className={containerClassName} styled={containerStyle}>
 				    <input type="checkbox" name="" id={controlClassName} className={controlClassName}/>
-	                <label className="toggle" htmlFor={controlClassName}>
+	                <label className="toggle" htmlFor={controlClassName}
+	                	onClick={this.toggleMode}
+	                >
 	                    <span className="text-left custom-control-label">
 	                    	{ translator['Pay by Card'] ? translator['Pay by Card'] : 'Pay by Card' }
 	                    </span>
@@ -56,7 +113,7 @@ export class CreditCardFormNPayViaEmail extends CreditCardInput {
 	                <div role="tabpanel" className="tab-pane by-card">
 						<div className="form-group">
 	                        <label>Name on Card</label>
-							{inputRenderer({
+							{this.inputRenderer({
 				              props: {
 				                id: 'name-on-card',
 				                ref: cardNameField => {
@@ -65,7 +122,8 @@ export class CreditCardFormNPayViaEmail extends CreditCardInput {
 				                className: `form-control ${inputClassName}`,
 				                placeholder: '',
 				                type: 'text',
-				                autoComplete: 'cc-name'
+				                autoComplete: 'cc-name',
+				                ...cardNumberInputProps
 				              }
 				            })}
 	                    </div>
@@ -176,18 +234,39 @@ export class CreditCardFormNPayViaEmail extends CreditCardInput {
 					            })}
 				            </div>
 	                    </div>)}
+	                    {showError && (
+				          <DangerText className={dangerTextClassName} styled={dangerTextStyle}>
+				            {
+				            	ccNumberErrorText || ccExpDateErrorText || ccCIDErrorText || ccZipErrorText
+				            }
+				          </DangerText>)}
 					</div>
 					<div role="tabpanel" className="tab-pane by-email">
 	                    <div className="form-group last">
 	                        <label>Email</label>
-	                        <input type="email" name="" className="form-control" placeholder="email@company.com"/>
+	                        {this.inputRenderer({
+				              props: {
+				                id: 'ccEmail',
+				                ref: emailField => {
+				                  this.emailField = emailField;
+				                },
+				                className: `form-control ${inputClassName}`,
+				                placeholder: 'email@company.com',
+				                type: 'email',
+				                ...emailInputProps,
+				                onBlur: this.handleEmailBlur(),
+				                onChange: this.handleEmailChange(),
+				                onKeyDown: this.handleKeyDown(this.emailField),
+				                onKeyPress: this.handleEmailKeyPress
+				              }
+				            })}
 	                    </div>
+	                    {showError && (
+				          <DangerText className={dangerTextClassName} styled={dangerTextStyle}>
+				            {ccEmailErrorText}
+				          </DangerText>)}
 	                </div>
 				</div>
-				{showError && errorText && (
-		          <DangerText className={dangerTextClassName} styled={dangerTextStyle}>
-		            {errorText}
-		          </DangerText>)}
 			</Fragment>
     )
   };

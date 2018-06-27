@@ -42,6 +42,8 @@ type Props = {
   cardNumberInputProps: Object,
   cardCVCInputProps: Object,
   cardZipInputProps: Object,
+  cardNameInputProps: Object,
+  emailInputProps: Object,
   cardImageClassName: string,
   cardImageStyle: Object,
   containerClassName: string,
@@ -69,7 +71,9 @@ type State = {
   ccNumberErrorText: string,
   ccExpDateErrorText: string,
   ccCIDErrorText: string,
-  ccZipErrorText: string
+  ccZipErrorText: string,
+  ccEmailErrorText: string,
+  isCardMode: boolean
 };
 
 const inputRenderer = ({ props }: Object) => <input {...props} />;
@@ -80,6 +84,8 @@ export class CreditCardInput extends Component<Props, State> {
   cardNumberField: any;
   cvcField: any;
   zipField: any;
+  emailField: any;
+  inputRenderer: any;
 
   static defaultProps = {
     cardCVCInputRenderer: inputRenderer,
@@ -91,6 +97,8 @@ export class CreditCardInput extends Component<Props, State> {
     cardNumberInputProps: {},
     cardCVCInputProps: {},
     cardZipInputProps: {},
+    cardNameInputProps: {},
+    emailInputProps: {},
     cardImageClassName: '',
     cardImageStyle: {},
     containerClassName: '',
@@ -121,8 +129,11 @@ export class CreditCardInput extends Component<Props, State> {
       ccNumberErrorText: null,
       ccExpDateErrorText: null,
       ccCIDErrorText: null,
-      ccZipErrorText: null
+      ccZipErrorText: null,
+      ccEmailErrorText: null,
+      isCardMode: true
     };
+  	this.inputRenderer = inputRenderer;
   }
 
   componentDidMount = () => {
@@ -398,13 +409,22 @@ export class CreditCardInput extends Component<Props, State> {
 
     this.setState({ errorText: null, [mapState['state']]: null });
 
-    afterValidateCard && afterValidateCard(true);
+    afterValidateCard && afterValidateCard(this.formIsValid());
   };
 
-  /**
-   *
-   * @return {string}
-   */
+  formIsValid = () => {
+  	if (this.state.isCardMode) {
+  		return !(
+  			this.state.ccNumberErrorText  ||
+  			this.state.ccExpDateErrorText ||
+  			this.state.ccCIDErrorText     ||
+  			this.state.ccZipErrorText
+  		);
+  	}
+
+  	return !this.state.ccEmailErrorText; 
+  } 
+
   getType = () => {
     let cardType = payment.fns.cardType(this.state.cardNumber);
     return cardType.charAt(0).toUpperCase() + cardType.slice(1);
@@ -558,8 +578,7 @@ export class CreditCardInput extends Component<Props, State> {
         {showError && errorText && (
           <DangerText className={dangerTextClassName} styled={dangerTextStyle}>
             {errorText}
-          </DangerText>
-        )}
+          </DangerText>)}
       </Container>
     );
   };
