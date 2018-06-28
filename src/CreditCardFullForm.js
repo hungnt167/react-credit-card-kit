@@ -1,14 +1,14 @@
 // @flow
 
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { CreditCardInput } from './CreditCardInput';
 
 import {
-	Container,
-	FormFieldWrapper,
-	FormFieldLabel,
-	FormInputWrapper,
-	DangerText
+  Container,
+  FormFieldWrapper,
+  FormFieldLabel,
+  FormInputWrapper,
+  DangerText
 } from './utils/styles';
 
 export class CreditCardFullForm extends CreditCardInput {
@@ -109,9 +109,11 @@ export class CreditCardFullForm extends CreditCardInput {
             })}
           </FormInputWrapper>
         </FormFieldWrapper>
-        {showError && (<DangerText className={dangerTextClassName} styled={dangerTextStyle}>
-          {ccNumberErrorText}
-        </DangerText>)}
+        {showError && (
+          <DangerText className={dangerTextClassName} styled={dangerTextStyle}>
+            {ccNumberErrorText}
+          </DangerText>
+        )}
         <FormFieldWrapper
           id="ccExpDate"
           className={fieldClassName}
@@ -148,9 +150,11 @@ export class CreditCardFullForm extends CreditCardInput {
             })}
           </FormInputWrapper>
         </FormFieldWrapper>
-        {showError && (<DangerText className={dangerTextClassName} styled={dangerTextStyle}>
-          {ccExpDateErrorText}
-        </DangerText>)}
+        {showError && (
+          <DangerText className={dangerTextClassName} styled={dangerTextStyle}>
+            {ccExpDateErrorText}
+          </DangerText>
+        )}
         <FormFieldWrapper
           id="ccCID"
           className={fieldClassName}
@@ -186,9 +190,11 @@ export class CreditCardFullForm extends CreditCardInput {
             })}
           </FormInputWrapper>
         </FormFieldWrapper>
-		{showError && (<DangerText className={dangerTextClassName} styled={dangerTextStyle}>
-          {ccCIDErrorText}        
-        </DangerText>)}
+        {showError && (
+          <DangerText className={dangerTextClassName} styled={dangerTextStyle}>
+            {ccCIDErrorText}
+          </DangerText>
+        )}
         {enableZipInput && (
           <Fragment>
             <FormFieldWrapper
@@ -225,9 +231,14 @@ export class CreditCardFullForm extends CreditCardInput {
                 })}
               </FormInputWrapper>
             </FormFieldWrapper>
-            {showError && (<DangerText className={dangerTextClassName} styled={dangerTextStyle}>
-	          {ccZipErrorText}        
-	        </DangerText>)}
+            {showError && (
+              <DangerText
+                className={dangerTextClassName}
+                styled={dangerTextStyle}
+              >
+                {ccZipErrorText}
+              </DangerText>
+            )}
           </Fragment>
         )}
       </Container>

@@ -124,13 +124,12 @@ const DangerText = styled.p`
 `;
 
 export {
-	Container,
-	FieldWrapper,
-	CardImage,
-	InputWrapper,
-	DangerText,
-
-	FormFieldWrapper,
-	FormFieldLabel,
-	FormInputWrapper
-}
+  Container,
+  FieldWrapper,
+  CardImage,
+  InputWrapper,
+  DangerText,
+  FormFieldWrapper,
+  FormFieldLabel,
+  FormInputWrapper
+};

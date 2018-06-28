@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import payment from 'payment';
 import creditCardType from 'credit-card-type';
 import isValidZip from 'is-valid-zip';
@@ -17,13 +17,12 @@ import images from './utils/images';
 import isExpiryInvalid from './utils/is-expiry-invalid';
 
 import {
-	Container,
-	FieldWrapper,
-	CardImage,
-	InputWrapper,
-	DangerText
+  Container,
+  FieldWrapper,
+  CardImage,
+  InputWrapper,
+  DangerText
 } from './utils/styles';
-
 
 const BACKSPACE_KEY_CODE = 8;
 const CARD_TYPES = {
@@ -133,7 +132,7 @@ export class CreditCardInput extends Component<Props, State> {
       ccEmailErrorText: null,
       isCardMode: true
     };
-  	this.inputRenderer = inputRenderer;
+    this.inputRenderer = inputRenderer;
   }
 
   componentDidMount = () => {
@@ -413,17 +412,17 @@ export class CreditCardInput extends Component<Props, State> {
   };
 
   formIsValid = () => {
-  	if (this.state.isCardMode) {
-  		return !(
-  			this.state.ccNumberErrorText  ||
-  			this.state.ccExpDateErrorText ||
-  			this.state.ccCIDErrorText     ||
-  			this.state.ccZipErrorText
-  		);
-  	}
+    if (this.state.isCardMode) {
+      return !(
+        this.state.ccNumberErrorText ||
+        this.state.ccExpDateErrorText ||
+        this.state.ccCIDErrorText ||
+        this.state.ccZipErrorText
+      );
+    }
 
-  	return !this.state.ccEmailErrorText; 
-  } 
+    return !this.state.ccEmailErrorText;
+  };
 
   getType = () => {
     let cardType = payment.fns.cardType(this.state.cardNumber);
@@ -575,10 +574,15 @@ export class CreditCardInput extends Component<Props, State> {
             })}
           </InputWrapper>
         </FieldWrapper>
-        {showError && errorText && (
-          <DangerText className={dangerTextClassName} styled={dangerTextStyle}>
-            {errorText}
-          </DangerText>)}
+        {showError &&
+          errorText && (
+            <DangerText
+              className={dangerTextClassName}
+              styled={dangerTextStyle}
+            >
+              {errorText}
+            </DangerText>
+          )}
       </Container>
     );
   };
