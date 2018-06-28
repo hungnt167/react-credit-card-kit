@@ -1,7 +1,12 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import styled from 'styled-components';
-import { CreditCardInput, CreditCardForm, CreditCardFullForm, CreditCardFormNPayViaEmail } from '.';
+import {
+  CreditCardInput,
+  CreditCardForm,
+  CreditCardFullForm,
+  CreditCardFormNPayViaEmail
+} from '.';
 import './index.stories.css';
 import './css/bootstrap.min.css';
 
@@ -116,7 +121,7 @@ storiesOf('CreditCardInput', module)
   ));
 
 storiesOf('CreditCardForm', module)
-.add('full form', () => (
+  .add('full form', () => (
     <Container style={{ backgroundColor: '#f0f0f0', width: '50%' }}>
       <CreditCardFullForm
         enableZipInput={false}
@@ -145,15 +150,12 @@ storiesOf('CreditCardForm', module)
       />
     </Container>
   ))
-.add('form', () => (
+  .add('form', () => (
     <Container style={{ backgroundColor: '#f0f0f0', width: '50%' }}>
-      <CreditCardForm
-        containerClassName="paypal-by"
-        enableZipInput={false}
-      />
+      <CreditCardForm containerClassName="paypal-by" enableZipInput={false} />
     </Container>
   ))
-.add('form and pay via email', () => (
+  .add('form and pay via email', () => (
     <Container style={{ backgroundColor: '#f0f0f0', width: '50%' }}>
       <CreditCardFormNPayViaEmail
         containerClassName="paypal-by"
@@ -162,4 +164,4 @@ storiesOf('CreditCardForm', module)
         afterValidateCard={isValid => console.log(isValid)}
       />
     </Container>
-  ))
+  ));

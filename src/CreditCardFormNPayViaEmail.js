@@ -1,18 +1,18 @@
 // @flow
-
+import 'babel-polyfill';
 import React, { Fragment } from 'react';
 import { CreditCardInput } from './CreditCardInput';
 
 import { DangerText } from './utils/styles';
 
 export class CreditCardFormNPayViaEmail extends CreditCardInput {
-  toggleMode = () => {
-    this.setState({
+  toggleMode = async () => {
+    await this.setState({
       isCardMode: !this.state.isCardMode
-    }).then(() => {
-      const { afterValidateCard } = this.props;
-      afterValidateCard && afterValidateCard(this.formIsValid());
     });
+
+    const { afterValidateCard } = this.props;
+    afterValidateCard && afterValidateCard(this.formIsValid());
   };
 
   isEmail = email => {
