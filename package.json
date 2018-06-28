@@ -1,6 +1,6 @@
 {
   "name": "react-credit-card-kit",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "description": "A credit/debit card input / form field for React",
   "license": "MIT",
   "repository": "github:hungnt167/react-credit-card-kit",

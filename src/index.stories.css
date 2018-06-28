@@ -15,3 +15,154 @@
   font-size: 1rem;
   border-bottom: 1px solid green;
 }
+
+
+
+ /* form */
+
+ .paypal-by {
+  max-width: 535px;
+  margin: 0 auto 15px;
+}
+.paypal-by .tab-pane {
+  background-color: #fff;
+  padding: 20px;
+}
+.paypal-by label {
+  display: block;
+  font-weight: normal;
+  color: #797979;
+  line-height: 22px;
+  font-size: 14px;
+  padding: 0;
+  margin-bottom: 3px;
+  text-align: left;
+}
+.paypal-by .form-group {
+  margin-bottom: 22px;
+}
+.paypal-by .form-group.last {
+  margin-bottom: 0;
+}
+.paypal-by .form-control {
+  display: block;
+  width: 100%;
+  height: 44px;
+  border-radius: 5px;
+  background-color: #ffffff;
+  border: solid 1px #d9d9d9;
+  font-size: 14px;
+  color: #797979;
+  box-shadow: none;
+  text-align: left;
+  line-height: 42px;
+  padding: 0 11px;
+  cursor: pointer;
+}
+.paypal-by .form-control::-moz-placeholder {
+  color: #797979;
+  opacity: 1;
+}
+.paypal-by .form-control:-ms-input-placeholder {
+  color: #797979;
+}
+.paypal-by .form-control::-webkit-input-placeholder {
+  color: #797979;
+}
+
+.paypal-by .col-xs-8,
+.paypal-by .col-xs-2 {
+  padding: 0 4px;
+}
+.paypal-by .row {
+  margin: 0 -4px;
+}
+
+.paypal-by .is-invalid {
+  border: 1px solid #ff3860;
+}
+
+/* form pay via email */
+
+.paypal-by .toggle {
+  display: block;
+  font-weight: normal;
+  padding: 0;
+  margin: 0 auto 16px;
+  width: 300px;
+  height: 39px;
+  border-radius: 25px;
+  border: solid 1px #d5d5d5;
+  position: relative;
+  font-size: 15px;
+  cursor: pointer;
+}
+.paypal-by .toggle:before {
+  content: "";
+  display: block;
+  width: 150px;
+  height: 39px;
+  border-radius: 25px;
+  background-color: #1e67e5;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+}
+.paypal-by .toggle .text-left,
+.paypal-by .toggle .text-right {
+  display: block;
+  width: 150px;
+  line-height: 39px;
+  height: 39px;
+  color: #aeaeae;
+  text-align: center;
+  padding: 0;
+  background-color: transparent;
+  border-radius: 25px;
+  position: absolute;
+  top: 0;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+  z-index: 6;
+}
+.paypal-by .toggle .text-left {
+  left: 0;
+  color: #fff;
+}
+.paypal-by .toggle .text-right {
+  right: 0;
+}
+.paypal-by input.checkpaypal-by {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+.paypal-by input.checkpaypal-by ~ .by-card {
+  display: block;
+}
+.paypal-by input.checkpaypal-by ~ .by-email {
+  display: none;
+}
+.paypal-by input.checkpaypal-by:checked + .toggle:before {
+  left: 150px;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+}
+.paypal-by input.checkpaypal-by:checked + .toggle .text-left {
+  color: #aeaeae;
+}
+.paypal-by input.checkpaypal-by:checked + .toggle .text-right {
+  color: #fff;
+}
+.paypal-by input.checkpaypal-by:checked ~ .by-card {
+  display: none;
+}
+.paypal-by input.checkpaypal-by:checked ~ .by-email {
+  display: block;
+}

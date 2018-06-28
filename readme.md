@@ -13,7 +13,9 @@
 ![](https://raw.githubusercontent.com/hungnt167/react-credit-card-kit/master/one-field.gif)
 
 
-![](https://raw.githubusercontent.com/hungnt167/react-credit-card-kit/master/form.png)
+![](https://raw.githubusercontent.com/hungnt167/react-credit-card-kit/master/full-form.gif)
+
+![](https://raw.githubusercontent.com/hungnt167/react-credit-card-kit/master/form-n-pay-via-email.gif)
 
 
 ## Install
@@ -25,9 +27,12 @@ $ npm install --save react-credit-card-kit
 
 ## Usage
 
+
+### One line
 ```js
 import CreditCardInput from 'react-credit-card-kit';
 
+...
 <CreditCardInput
   cardNumberInputProps={{ value: cardNumber, onChange: this.handleCardNumberChange }}
   cardExpiryInputProps={{ value: expiry, onChange: this.handleCardExpiryChange }}
@@ -36,16 +41,28 @@ import CreditCardInput from 'react-credit-card-kit';
 />
 ```
 
+### Full Form
 
 ```js
-import CreditCardForm from 'react-credit-card-kit';
+import CreditCardFullForm from 'react-credit-card-kit';
 
+...
 <CreditCardForm
-  cardNumberInputProps={{ value: cardNumber, onChange: this.handleCardNumberChange }}
-  cardExpiryInputProps={{ value: expiry, onChange: this.handleCardExpiryChange }}
-  cardCVCInputProps={{ value: cvc, onChange: this.handleCardCVCChange }}
+  ...
   afterValidateCard={(formIsValid) => {}}
 />
+```
+
+### Form and Pay via Email 
+
+```js
+import CreditCardFormNPayViaEmail from 'react-credit-card-kit';
+...
+<CreditCardFormNPayViaEmail
+        containerClassName="paypal-by"
+        controlClassName="checkpaypal-by"
+        enableZipInput={false}
+      />
 ```
 
 ## Available props
@@ -64,6 +81,7 @@ import CreditCardForm from 'react-credit-card-kit';
   <tr><td>  cardImageStyle </td><td>object (optional)</td><td>{}</td> <td>Style for the card type image</td></tr>
   <tr><td>  containerClassName </td><td>string (optional)</td><td>''</td> <td>Class name for the field container</td></tr>
   <tr><td>  containerStyle </td><td>object (optional)</td><td>{}</td> <td>Style for the field container</td></tr>
+  <tr><td>  showError </td><td>boolean (optional)</td><td>true</td> <td>Option for show error text</td></tr>
   <tr><td>  dangerTextClassName </td><td>string (optional)</td><td>''</td> <td>Class name for the danger text</td></tr>
   <tr><td>  dangerTextStyle </td><td>object (optional)</td><td>{}</td> <td>Style for the danger text container</td></tr>
   <tr><td>  fieldClassName </td><td>string (optional)</td><td>''</td> <td>Class name for the field</td></tr>
@@ -94,6 +112,8 @@ import CreditCardForm from 'react-credit-card-kit';
 </table>
 
 #### Custom input renderer usage
+
+Only for type `CreditCardInput`
 
 ```
 <CreditCardInput
