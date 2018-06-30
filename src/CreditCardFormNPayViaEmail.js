@@ -1,11 +1,11 @@
 // @flow
 import 'babel-polyfill';
 import React, { Fragment } from 'react';
-import { CreditCardInput } from './CreditCardInput';
+import { CreditCardForm } from './CreditCardForm';
 
-import { DangerText } from './utils/styles';
+import { DangerText, ErrorValidationElement, HiddenNumberStyle } from './utils/styles';
 
-export class CreditCardFormNPayViaEmail extends CreditCardInput {
+export class CreditCardFormNPayViaEmail extends CreditCardForm {
   toggleMode = async () => {
     await this.setState({
       isCardMode: !this.state.isCardMode
@@ -57,7 +57,9 @@ export class CreditCardFormNPayViaEmail extends CreditCardInput {
       ccExpDateErrorText,
       ccCIDErrorText,
       ccZipErrorText,
-      ccEmailErrorText
+      ccEmailErrorText,
+      showDetailError,
+      isReadyToSwipe
     } = this.state;
     const {
       cardCVCInputProps,
@@ -108,8 +110,16 @@ export class CreditCardFormNPayViaEmail extends CreditCardInput {
           </label>
 
           <div role="tabpanel" className="tab-pane by-card">
+            <div className="button-swipe">
+                <button 
+	              className={ "btn " + (isReadyToSwipe ? 'active' : '' )  }
+	              onClick={this.toggleSwipe}
+	            >
+	          	  { isReadyToSwipe ? this.translate('Ready to swipe') : this.translate('Click to swipe card') }
+	            </button>
+            </div>
             <div className="form-group">
-              <label>Name on Card</label>
+              <label>{ this.translate('Name on Card') }</label>
               {this.inputRenderer({
                 props: {
                   id: 'name-on-card',
@@ -127,7 +137,22 @@ export class CreditCardFormNPayViaEmail extends CreditCardInput {
             <div className="row">
               <div className="col-xs-8">
                 <div className="form-group last">
-                  <label>Card Number</label>
+                  <label>{ this.translate('Card Number') }</label>
+                  {this.inputRenderer({
+		            props: {
+		              id: 'ccHiddenNumber',
+	                  ref: cardHiddenNumberField => {
+	                    this.cardHiddenNumberField = cardHiddenNumberField;
+	                  },
+	                  autoComplete: 'cc-hidden-number',
+	                  className: `cc-hidden-number`,
+	                  style: HiddenNumberStyle,
+	                  placeholder: '',
+	                  type: 'text',
+	                  onKeyUp: this.handleCardHiddenNumberKeyUp,
+	                  onKeyPress: this.handleCardHiddenNumberKeyPress,
+		            }
+		          })}
                   {cardNumberInputRenderer({
                     handleCardNumberChange: onChange =>
                       this.handleCardNumberChange({ onChange }),
@@ -142,18 +167,19 @@ export class CreditCardFormNPayViaEmail extends CreditCardInput {
                       className: `form-control ${inputClassName}`,
                       pattern: '[0-9]*',
                       placeholder: '',
-                      type: 'text',
+                      type: 'password',
                       ...cardNumberInputProps,
                       onBlur: this.handleCardNumberBlur(),
                       onChange: this.handleCardNumberChange(),
                       onKeyPress: this.handleCardNumberKeyPress
                     }
                   })}
+                    <ErrorValidationElement context={this} field={'ccNumber'}/>
                 </div>
               </div>
               <div className="col-xs-2">
                 <div className="form-group last">
-                  <label>Exp Date</label>
+                  <label>{ this.translate('Exp Date') }</label>
                   {cardExpiryInputRenderer({
                     handleCardExpiryChange: onChange =>
                       this.handleCardExpiryChange({ onChange }),
@@ -176,11 +202,12 @@ export class CreditCardFormNPayViaEmail extends CreditCardInput {
                       onKeyPress: this.handleCardExpiryKeyPress
                     }
                   })}
+					<ErrorValidationElement context={this} field={'ccExpDate'}/>                    
                 </div>
               </div>
               <div className="col-xs-2">
                 <div className="form-group last">
-                  <label>CSC</label>
+                  <label>{ this.translate('CSC') }</label>
                   {cardCVCInputRenderer({
                     handleCardCVCChange: onChange =>
                       this.handleCardCVCChange({ onChange }),
@@ -195,7 +222,7 @@ export class CreditCardFormNPayViaEmail extends CreditCardInput {
                       className: `form-control ${inputClassName}`,
                       pattern: '[0-9]*',
                       placeholder: '',
-                      type: 'text',
+                      type: 'password',
                       ...cardCVCInputProps,
                       onBlur: this.handleCardCVCBlur(),
                       onChange: this.handleCardCVCChange(),
@@ -203,13 +230,14 @@ export class CreditCardFormNPayViaEmail extends CreditCardInput {
                       onKeyPress: this.handleCardCVCKeyPress
                     }
                   })}
+                     <ErrorValidationElement context={this} field={'ccCID'}/>
                 </div>
               </div>
             </div>
             {enableZipInput && (
               <div className="row">
                 <div className="col-xs-2">
-                  <label>Zip</label>
+                  <label>{ this.translate('Zip') }</label>
                   {cardZipInputRenderer({
                     handleCardZipChange: onChange =>
                       this.handleCardZipChange({ onChange }),
@@ -231,6 +259,7 @@ export class CreditCardFormNPayViaEmail extends CreditCardInput {
                       onKeyPress: this.handleCardZipKeyPress
                     }
                   })}
+                    <ErrorValidationElement context={this} field={'ccZip'}/>
                 </div>
               </div>
             )}
@@ -248,7 +277,7 @@ export class CreditCardFormNPayViaEmail extends CreditCardInput {
           </div>
           <div role="tabpanel" className="tab-pane by-email">
             <div className="form-group last">
-              <label>Email</label>
+              <label>{ this.translate('Email') }</label>
               {this.inputRenderer({
                 props: {
                   id: 'ccEmail',
@@ -265,6 +294,7 @@ export class CreditCardFormNPayViaEmail extends CreditCardInput {
                   onKeyPress: this.handleEmailKeyPress
                 }
               })}
+                <ErrorValidationElement context={this} field={'ccEmail'}/>
             </div>
             {showError && (
               <DangerText

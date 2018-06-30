@@ -49,6 +49,7 @@ type Props = {
   containerStyle: Object,
   controlClassName: string,
   showError: boolean,
+  showPopoverError: boolean,
   dangerTextClassName: string,
   dangerTextStyle: Object,
   fieldClassName: string,
@@ -104,6 +105,7 @@ export class CreditCardInput extends Component<Props, State> {
     containerStyle: {},
     controlClassName: '',
     showError: true,
+    showPopoverError: false,
     dangerTextClassName: '',
     dangerTextStyle: {},
     enableZipInput: false,
@@ -427,6 +429,10 @@ export class CreditCardInput extends Component<Props, State> {
   getType = () => {
     let cardType = payment.fns.cardType(this.state.cardNumber);
     return cardType.charAt(0).toUpperCase() + cardType.slice(1);
+  };
+
+  translate = (word) => {
+    return this.props.translator[word] || word;
   };
 
   render = () => {

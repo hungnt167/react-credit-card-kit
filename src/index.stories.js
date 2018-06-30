@@ -7,8 +7,8 @@ import {
   CreditCardFullForm,
   CreditCardFormNPayViaEmail
 } from '.';
-import './index.stories.css';
 import './css/bootstrap.min.css';
+import './index.stories.css';
 
 const Container = styled.div`
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
@@ -151,16 +151,23 @@ storiesOf('CreditCardForm', module)
     </Container>
   ))
   .add('form', () => (
-    <Container style={{ backgroundColor: '#f0f0f0', width: '50%' }}>
-      <CreditCardForm containerClassName="paypal-by" enableZipInput={false} />
+    <Container style={{ backgroundColor: '#f8f8f8', width: '50%' }}>
+      <CreditCardForm 
+      containerClassName="paypal-by" 
+      enableZipInput={false}
+      showError={false}
+      showPopoverError={true}
+      />
     </Container>
   ))
   .add('form and pay via email', () => (
-    <Container style={{ backgroundColor: '#f0f0f0', width: '50%' }}>
+    <Container style={{ backgroundColor: '#f8f8f8', width: '50%' }}>
       <CreditCardFormNPayViaEmail
         containerClassName="paypal-by"
         controlClassName="checkpaypal-by"
         enableZipInput={false}
+        showError={false}
+        showPopoverError={true}
         afterValidateCard={isValid => console.log(isValid)}
       />
     </Container>

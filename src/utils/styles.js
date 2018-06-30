@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -123,6 +124,33 @@ const DangerText = styled.p`
   ${({ styled }) => ({ ...styled })};
 `;
 
+const ErrorValidationElement = ( { field, context } ) => context.props.showPopoverError ? (
+  <div className="validation-advice">
+      <a 
+      className="dropdown-toggle" 
+      onClick={() => context.showDetailError && context.showDetailError(field)} 
+      style={{
+        display: context.state[field + 'ErrorText'] ? 'block' : 'none'
+      }}
+      />
+      <div className="popover" style={{
+        top: '40px', left: '13px', display: context.state.showDetailError[field] ? 'block' : 'none'
+      }}>
+        <div className="popover-content">{ context.state[field + 'ErrorText'] }</div>
+      </div>
+  </div>
+) : '';
+
+const HiddenNumberStyle = {
+  width: '1px',
+  height: '1px',
+  border: 'none',
+  background: 'transparent',
+  position: 'absolute',
+  outline: 'none'
+};
+
+
 export {
   Container,
   FieldWrapper,
@@ -131,5 +159,7 @@ export {
   DangerText,
   FormFieldWrapper,
   FormFieldLabel,
-  FormInputWrapper
+  FormInputWrapper,
+  ErrorValidationElement,
+  HiddenNumberStyle
 };

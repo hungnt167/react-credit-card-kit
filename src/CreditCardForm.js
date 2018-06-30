@@ -3,11 +3,91 @@
 import React from 'react';
 import { CreditCardInput } from './CreditCardInput';
 
-import { DangerText } from './utils/styles';
+import { DangerText, ErrorValidationElement, HiddenNumberStyle } from './utils/styles';
+import { Cardswipe } from './utils/cardswipe';
 
 export class CreditCardForm extends CreditCardInput {
+  initialShowDetailError = {
+	ccNumber: null,
+	ccExpDate: null,
+	ccCID: null,
+	ccZip: null,
+  };
+
+  cardHiddenNumberField;
+  cardswipe;
+
+  constructor(props) {
+  	super(props);
+  	this.state.isReadyToSwipe = false;
+  	this.state.showDetailError = {...this.initialShowDetailError};
+
+  	this.cardswipe = new Cardswipe();
+  } 
+
+  setFieldInvalid = (errorText: string, mapState: Object) => {
+    const { afterValidateCard, translator } = this.props;
+
+    
+    this.setState({
+      errorText: translator[errorText] || errorText,
+      [mapState['state']]: errorText
+    });
+    afterValidateCard && afterValidateCard(false);
+  };
+
+  setFieldValid = mapState => {
+    const { afterValidateCard } = this.props;
+
+    this.setState({ errorText: null, [mapState['state']]: null });
+
+    afterValidateCard && afterValidateCard(this.formIsValid());
+  };
+
+  showDetailError = (field) => {
+    //hide all 
+    let originShowDetailError    = {...this.initialShowDetailError};
+    originShowDetailError[field] = !this.state.showDetailError[field];
+    this.setState({ showDetailError: originShowDetailError });
+  };
+
+  toggleSwipe = (e) => {
+  	e.preventDefault();
+  	if (!this.state.isReadyToSwipe) {
+  		this.setState({
+		  cardNumberLength: 0,
+	      cardNumber: null,
+	      ccNumberErrorText: null,
+	      ccExpDateErrorText: null,
+	      ccCIDErrorText: null,
+	      ccZipErrorText: null
+  		});
+
+  		this.cardHiddenNumberField && this.cardHiddenNumberField.focus();
+  		this.cardNameField && (this.cardNameField.value = '');
+  		this.cardNumberField && (this.cardNumberField.value = '');
+  		this.cardExpiryField && (this.cardExpiryField.value = '');
+  	}
+  	this.setState({ isReadyToSwipe: !this.state.isReadyToSwipe });
+  };
+
+  handleCardHiddenNumberKeyUp = async (event) => {
+  	if (event.keyCode === 13) {
+  		let ccinfo = this.cardswipe.parseSwiperData(this.cardHiddenNumberField.value);
+		if (ccinfo === -1) return;
+		let expiry = `${ccinfo.exp_month}/${ccinfo.exp_year.substring(2)}`;
+		this.cardNameField.value   = ccinfo.name;
+		this.cardNumberField.value = ccinfo.number;
+		this.handleCardNumberChange()( {target: { value: ccinfo.number }} );
+		this.cardExpiryField.value = expiry;
+		this.handleCardExpiryChange()( {target: { value: expiry }} );
+		this.cvcField.focus();
+  		this.setState({ isReadyToSwipe: !this.state.isReadyToSwipe })
+  	}
+  };
+
   render = () => {
-    const { errorText } = this.state;
+    const { errorText, isReadyToSwipe } = this.state;
     const {
       cardCVCInputProps,
       cardZipInputProps,
@@ -28,8 +108,16 @@ export class CreditCardForm extends CreditCardInput {
 
     return (
       <div className={containerClassName} styled={containerStyle}>
+        <div className="button-swipe">
+          <button 
+           className={ "btn " + (isReadyToSwipe ? 'active' : '' )  }
+           onClick={this.toggleSwipe}
+          >
+          	{ isReadyToSwipe ? this.translate('Ready to swipe') : this.translate('Click to swipe card') }
+          </button>
+        </div>
         <div className="form-group">
-          <label>Name on Card</label>
+          <label>{ this.translate('Name on Card') }</label>
           {this.inputRenderer({
             props: {
               id: 'name-on-card',
@@ -46,7 +134,21 @@ export class CreditCardForm extends CreditCardInput {
         <div className="row">
           <div className="col-xs-8">
             <div className="form-group last">
-              <label>Card Number</label>
+              <label>{ this.translate('Card Number') }</label>
+              {this.inputRenderer({
+	            props: {
+	              id: 'ccHiddenNumber',
+                  ref: cardHiddenNumberField => {
+                    this.cardHiddenNumberField = cardHiddenNumberField;
+                  },
+                  autoComplete: 'cc-hidden-number',
+                  className: `cc-hidden-number`,
+                  style: HiddenNumberStyle,
+                  placeholder: '',
+                  type: 'text',
+                  onKeyUp: this.handleCardHiddenNumberKeyUp
+	            }
+	          })}
               {cardNumberInputRenderer({
                 handleCardNumberChange: onChange =>
                   this.handleCardNumberChange({ onChange }),
@@ -68,11 +170,12 @@ export class CreditCardForm extends CreditCardInput {
                   onKeyPress: this.handleCardNumberKeyPress
                 }
               })}
+                <ErrorValidationElement context={this} field={'ccNumber'}/>
             </div>
           </div>
           <div className="col-xs-2">
             <div className="form-group last">
-              <label>Exp Date</label>
+              <label>{ this.translate('Exp Date') }</label>
               {cardExpiryInputRenderer({
                 handleCardExpiryChange: onChange =>
                   this.handleCardExpiryChange({ onChange }),
@@ -95,11 +198,12 @@ export class CreditCardForm extends CreditCardInput {
                   onKeyPress: this.handleCardExpiryKeyPress
                 }
               })}
+                <ErrorValidationElement context={this} field={'ccExpDate'}/>
             </div>
           </div>
           <div className="col-xs-2">
             <div className="form-group last">
-              <label>CSC</label>
+              <label>{ this.translate('CSC') }</label>
               {cardCVCInputRenderer({
                 handleCardCVCChange: onChange =>
                   this.handleCardCVCChange({ onChange }),
@@ -121,13 +225,14 @@ export class CreditCardForm extends CreditCardInput {
                   onKeyPress: this.handleCardCVCKeyPress
                 }
               })}
+                <ErrorValidationElement context={this} field={'ccCID'}/>
             </div>
           </div>
         </div>
         {enableZipInput && (
           <div className="row">
             <div className="col-xs-2">
-              <label>Zip</label>
+              <label>{ this.translate('Zip') }</label>
               {cardZipInputRenderer({
                 handleCardZipChange: onChange =>
                   this.handleCardZipChange({ onChange }),
@@ -148,6 +253,7 @@ export class CreditCardForm extends CreditCardInput {
                   onKeyPress: this.handleCardZipKeyPress
                 }
               })}
+                <ErrorValidationElement context={this} field={'ccZip'}/>
             </div>
           </div>
         )}
