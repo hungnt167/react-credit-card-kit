@@ -14,7 +14,9 @@ import {
   isHighlighted
 } from './utils/formatter';
 import images from './utils/images';
-import isExpiryInvalid from './utils/is-expiry-invalid';
+import isExpiryInvalid, {
+  ERROR_TEXT__YEAR_OUT_OF_RANGE
+} from './utils/is-expiry-invalid';
 
 import {
   Container,
@@ -155,8 +157,15 @@ export class CreditCardInput extends Component<Props, State> {
   handleCardNumberBlur = (
     { onBlur }: { onBlur?: ?Function } = { onBlur: null }
   ) => (e: SyntheticInputEvent<*>) => {
-    if (!payment.fns.validateCardNumber(e.target.value)) {
-      this.setFieldInvalid('Card number is invalid', {
+    let value = e.target.value;
+    if (!payment.fns.validateCardNumber(value)) {
+      let message = value.length ? 'Card number is invalid' : 'This is a required field';
+
+      if (e.target.value.length === 4) {
+        message = 'The merchant only accepts Discover, American Express, Visa, MasterCard';
+      }
+
+      this.setFieldInvalid(message, {
         state: 'ccNumberErrorText'
       });
     }
@@ -198,7 +207,7 @@ export class CreditCardInput extends Component<Props, State> {
           break;
         }
         if (cardNumberLength === lastCardTypeLength) {
-          this.setFieldInvalid('Card number is invalid', {
+          this.setFieldInvalid('Please enter a valid card number', {
             state: 'ccNumberErrorText'
           });
         }
@@ -226,8 +235,19 @@ export class CreditCardInput extends Component<Props, State> {
   ) => (e: SyntheticInputEvent<*>) => {
     const cardExpiry = e.target.value.split(' / ').join('/');
     const expiryError = isExpiryInvalid(cardExpiry);
+
     if (expiryError) {
-      this.setFieldInvalid(expiryError, { state: 'ccExpDateErrorText' });
+      let message = 'Please enter a valid expiration date';
+     
+      if (expiryError === ERROR_TEXT__YEAR_OUT_OF_RANGE) {
+        message = 'Your card is expire';
+      }
+
+      if (!cardExpiry.length) {
+        message = 'This is a required filed';
+      } 
+
+      this.setFieldInvalid(message, { state: 'ccExpDateErrorText' });
     }
 
     const { cardExpiryInputProps } = this.props;
@@ -275,7 +295,9 @@ export class CreditCardInput extends Component<Props, State> {
     { onBlur }: { onBlur?: ?Function } = { onBlur: null }
   ) => (e: SyntheticInputEvent<*>) => {
     if (!payment.fns.validateCardCVC(e.target.value)) {
-      this.setFieldInvalid('CVC is invalid', {
+      let message = e.target.value.length ? 'Please enter a valid CSC' : 'This is a required filed';
+
+      this.setFieldInvalid(message, {
         state: 'ccCIDErrorText'
       });
     }
@@ -298,7 +320,7 @@ export class CreditCardInput extends Component<Props, State> {
     });
     if (CVCLength >= 4) {
       if (!payment.fns.validateCardCVC(CVC, cardType)) {
-        this.setFieldInvalid('CVC is invalid', {
+        this.setFieldInvalid('Please enter a valid CSC', {
           state: 'ccCIDErrorText'
         });
       }

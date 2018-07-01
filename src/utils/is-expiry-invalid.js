@@ -19,14 +19,28 @@ export default (expiryDate: string) => {
   }
 
   const expiryYear = splitDate[1];
-  let currentYear = new Date().getFullYear();
+  const current = new Date();
+  let currentYear = current.getFullYear();
   currentYear = parseInt(
     expiryYear.length === 4 ? currentYear : currentYear.toString().substr(-2),
     10
   );
-  if (currentYear > parseInt(expiryYear, 10)) {
+
+  const isSameYear = currentYear === parseInt(expiryYear, 10);
+
+  if ( 
+    ( currentYear > parseInt(expiryYear, 10) ) 
+    || 
+    ( isSameYear && (parseInt(expiryMonth, 10) < parseInt(current.getMonth(), 10)) ) 
+  ) {
     return ERROR_TEXT__YEAR_OUT_OF_RANGE;
   }
 
   return false;
 };
+
+export {
+  ERROR_TEXT__INVALID_EXPIRY_DATE,
+  ERROR_TEXT__MONTH_OUT_OF_RANGE,
+  ERROR_TEXT__YEAR_OUT_OF_RANGE
+}
