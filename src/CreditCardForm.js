@@ -3,32 +3,35 @@
 import React from 'react';
 import { CreditCardInput } from './CreditCardInput';
 
-import { DangerText, ErrorValidationElement, HiddenNumberStyle } from './utils/styles';
+import {
+  DangerText,
+  ErrorValidationElement,
+  HiddenNumberStyle
+} from './utils/styles';
 import { Cardswipe } from './utils/cardswipe';
 
 export class CreditCardForm extends CreditCardInput {
   initialShowDetailError = {
-	ccNumber: null,
-	ccExpDate: null,
-	ccCID: null,
-	ccZip: null,
+    ccNumber: null,
+    ccExpDate: null,
+    ccCID: null,
+    ccZip: null
   };
 
   cardHiddenNumberField;
   cardswipe;
 
   constructor(props) {
-  	super(props);
-  	this.state.isReadyToSwipe = false;
-  	this.state.showDetailError = {...this.initialShowDetailError};
+    super(props);
+    this.state.isReadyToSwipe = false;
+    this.state.showDetailError = { ...this.initialShowDetailError };
 
-  	this.cardswipe = new Cardswipe();
-  } 
+    this.cardswipe = new Cardswipe();
+  }
 
   setFieldInvalid = (errorText: string, mapState: Object) => {
     const { afterValidateCard, translator } = this.props;
 
-    
     this.setState({
       errorText: translator[errorText] || errorText,
       [mapState['state']]: errorText
@@ -44,46 +47,48 @@ export class CreditCardForm extends CreditCardInput {
     afterValidateCard && afterValidateCard(this.formIsValid());
   };
 
-  showDetailError = (field) => {
-    //hide all 
-    let originShowDetailError    = {...this.initialShowDetailError};
+  showDetailError = field => {
+    //hide all
+    let originShowDetailError = { ...this.initialShowDetailError };
     originShowDetailError[field] = !this.state.showDetailError[field];
     this.setState({ showDetailError: originShowDetailError });
   };
 
-  toggleSwipe = (e) => {
-  	e.preventDefault();
-  	if (!this.state.isReadyToSwipe) {
-  		this.setState({
-		  cardNumberLength: 0,
-	      cardNumber: null,
-	      ccNumberErrorText: null,
-	      ccExpDateErrorText: null,
-	      ccCIDErrorText: null,
-	      ccZipErrorText: null
-  		});
+  toggleSwipe = e => {
+    e.preventDefault();
+    if (!this.state.isReadyToSwipe) {
+      this.setState({
+        cardNumberLength: 0,
+        cardNumber: null,
+        ccNumberErrorText: null,
+        ccExpDateErrorText: null,
+        ccCIDErrorText: null,
+        ccZipErrorText: null
+      });
 
-  		this.cardHiddenNumberField && this.cardHiddenNumberField.focus();
-  		this.cardNameField && (this.cardNameField.value = '');
-  		this.cardNumberField && (this.cardNumberField.value = '');
-  		this.cardExpiryField && (this.cardExpiryField.value = '');
-  	}
-  	this.setState({ isReadyToSwipe: !this.state.isReadyToSwipe });
+      this.cardHiddenNumberField && this.cardHiddenNumberField.focus();
+      this.cardNameField && (this.cardNameField.value = '');
+      this.cardNumberField && (this.cardNumberField.value = '');
+      this.cardExpiryField && (this.cardExpiryField.value = '');
+    }
+    this.setState({ isReadyToSwipe: !this.state.isReadyToSwipe });
   };
 
-  handleCardHiddenNumberKeyUp = async (event) => {
-  	if (event.keyCode === 13) {
-  		let ccinfo = this.cardswipe.parseSwiperData(this.cardHiddenNumberField.value);
-		if (ccinfo === -1) return;
-		let expiry = `${ccinfo.exp_month}/${ccinfo.exp_year.substring(2)}`;
-		this.cardNameField.value   = ccinfo.name;
-		this.cardNumberField.value = ccinfo.number;
-		this.handleCardNumberChange()( {target: { value: ccinfo.number }} );
-		this.cardExpiryField.value = expiry;
-		this.handleCardExpiryChange()( {target: { value: expiry }} );
-		this.cvcField.focus();
-  		this.setState({ isReadyToSwipe: !this.state.isReadyToSwipe })
-  	}
+  handleCardHiddenNumberKeyUp = async event => {
+    if (event.keyCode === 13) {
+      let ccinfo = this.cardswipe.parseSwiperData(
+        this.cardHiddenNumberField.value
+      );
+      if (ccinfo === -1) return;
+      let expiry = `${ccinfo.exp_month}/${ccinfo.exp_year.substring(2)}`;
+      this.cardNameField.value = ccinfo.name;
+      this.cardNumberField.value = ccinfo.number;
+      this.handleCardNumberChange()({ target: { value: ccinfo.number } });
+      this.cardExpiryField.value = expiry;
+      this.handleCardExpiryChange()({ target: { value: expiry } });
+      this.cvcField.focus();
+      this.setState({ isReadyToSwipe: !this.state.isReadyToSwipe });
+    }
   };
 
   render = () => {
@@ -108,164 +113,170 @@ export class CreditCardForm extends CreditCardInput {
 
     return (
       <div className={containerClassName} styled={containerStyle}>
-        <div className="button-swipe">
-          <button 
-           className={ "btn " + (isReadyToSwipe ? 'active' : '' )  }
-           onClick={this.toggleSwipe}
-          >
-          	{ isReadyToSwipe ? this.translate('Ready to swipe') : this.translate('Click to swipe card') }
-          </button>
-        </div>
-        <div className="form-group">
-          <label>{ this.translate('Name on Card') }</label>
-          {this.inputRenderer({
-            props: {
-              id: 'name-on-card',
-              ref: cardNameField => {
-                this.cardNameField = cardNameField;
-              },
-              className: `form-control ${inputClassName}`,
-              placeholder: '',
-              type: 'text',
-              autoComplete: 'cc-name'
-            }
-          })}
-        </div>
-        <div className="row">
-          <div className="col-xs-8">
-            <div className="form-group last">
-              <label>{ this.translate('Card Number') }</label>
-              {this.inputRenderer({
-	            props: {
-	              id: 'ccHiddenNumber',
-                  ref: cardHiddenNumberField => {
-                    this.cardHiddenNumberField = cardHiddenNumberField;
-                  },
-                  autoComplete: 'cc-hidden-number',
-                  className: `cc-hidden-number`,
-                  style: HiddenNumberStyle,
-                  placeholder: '',
-                  type: 'text',
-                  onKeyUp: this.handleCardHiddenNumberKeyUp
-	            }
-	          })}
-              {cardNumberInputRenderer({
-                handleCardNumberChange: onChange =>
-                  this.handleCardNumberChange({ onChange }),
-                handleCardNumberBlur: onBlur =>
-                  this.handleCardNumberBlur({ onBlur }),
-                props: {
-                  id: 'ccNumber',
-                  ref: cardNumberField => {
-                    this.cardNumberField = cardNumberField;
-                  },
-                  autoComplete: 'cc-number',
-                  className: `form-control ${inputClassName}`,
-                  pattern: '[0-9]*',
-                  placeholder: '',
-                  type: 'text',
-                  ...cardNumberInputProps,
-                  onBlur: this.handleCardNumberBlur(),
-                  onChange: this.handleCardNumberChange(),
-                  onKeyPress: this.handleCardNumberKeyPress
-                }
-              })}
-                <ErrorValidationElement context={this} field={'ccNumber'}/>
-            </div>
-          </div>
-          <div className="col-xs-2">
-            <div className="form-group last">
-              <label>{ this.translate('Exp Date') }</label>
-              {cardExpiryInputRenderer({
-                handleCardExpiryChange: onChange =>
-                  this.handleCardExpiryChange({ onChange }),
-                handleCardExpiryBlur: onBlur =>
-                  this.handleCardExpiryBlur({ onBlur }),
-                props: {
-                  id: 'ccExpDate',
-                  ref: cardExpiryField => {
-                    this.cardExpiryField = cardExpiryField;
-                  },
-                  autoComplete: 'cc-exp',
-                  className: `form-control ${inputClassName}`,
-                  pattern: '[0-9]*',
-                  placeholder: 'MM/YY',
-                  type: 'text',
-                  ...cardExpiryInputProps,
-                  onBlur: this.handleCardExpiryBlur(),
-                  onChange: this.handleCardExpiryChange(),
-                  onKeyDown: this.handleKeyDown(this.cardNumberField),
-                  onKeyPress: this.handleCardExpiryKeyPress
-                }
-              })}
-                <ErrorValidationElement context={this} field={'ccExpDate'}/>
-            </div>
-          </div>
-          <div className="col-xs-2">
-            <div className="form-group last">
-              <label>{ this.translate('CSC') }</label>
-              {cardCVCInputRenderer({
-                handleCardCVCChange: onChange =>
-                  this.handleCardCVCChange({ onChange }),
-                handleCardCVCBlur: onBlur => this.handleCardCVCBlur({ onBlur }),
-                props: {
-                  id: 'ccCID',
-                  ref: cvcField => {
-                    this.cvcField = cvcField;
-                  },
-                  autoComplete: 'off',
-                  className: `form-control ${inputClassName}`,
-                  pattern: '[0-9]*',
-                  placeholder: '',
-                  type: 'text',
-                  ...cardCVCInputProps,
-                  onBlur: this.handleCardCVCBlur(),
-                  onChange: this.handleCardCVCChange(),
-                  onKeyDown: this.handleKeyDown(this.cardExpiryField),
-                  onKeyPress: this.handleCardCVCKeyPress
-                }
-              })}
-                <ErrorValidationElement context={this} field={'ccCID'}/>
-            </div>
-          </div>
-        </div>
-        {enableZipInput && (
-          <div className="row">
-            <div className="col-xs-2">
-              <label>{ this.translate('Zip') }</label>
-              {cardZipInputRenderer({
-                handleCardZipChange: onChange =>
-                  this.handleCardZipChange({ onChange }),
-                handleCardZipBlur: onBlur => this.handleCardZipBlur({ onBlur }),
-                props: {
-                  id: 'zip',
-                  ref: zipField => {
-                    this.zipField = zipField;
-                  },
-                  className: `form-control ${inputClassName}`,
-                  pattern: '[0-9]*',
-                  placeholder: '',
-                  type: 'text',
-                  ...cardZipInputProps,
-                  onBlur: this.handleCardZipBlur(),
-                  onChange: this.handleCardZipChange(),
-                  onKeyDown: this.handleKeyDown(this.cvcField),
-                  onKeyPress: this.handleCardZipKeyPress
-                }
-              })}
-                <ErrorValidationElement context={this} field={'ccZip'}/>
-            </div>
-          </div>
-        )}
-        {showError &&
-          errorText && (
-            <DangerText
-              className={dangerTextClassName}
-              styled={dangerTextStyle}
+        <div role="tabpanel" className="tab-pane by-card">
+          <div className="button-swipe">
+            <button
+              className={'btn ' + (isReadyToSwipe ? 'active' : '')}
+              onClick={this.toggleSwipe}
             >
-              {errorText}
-            </DangerText>
+              {isReadyToSwipe
+                ? this.translate('Ready to swipe')
+                : this.translate('Click to swipe card')}
+            </button>
+          </div>
+          <div className="form-group">
+            <label>{this.translate('Name on Card')}</label>
+            {this.inputRenderer({
+              props: {
+                id: 'name-on-card',
+                ref: cardNameField => {
+                  this.cardNameField = cardNameField;
+                },
+                className: `form-control ${inputClassName}`,
+                placeholder: '',
+                type: 'text',
+                autoComplete: 'cc-name'
+              }
+            })}
+          </div>
+          <div className="row">
+            <div className="col-xs-8">
+              <div className="form-group last">
+                <label>{this.translate('Card Number')}</label>
+                {this.inputRenderer({
+                  props: {
+                    id: 'ccHiddenNumber',
+                    ref: cardHiddenNumberField => {
+                      this.cardHiddenNumberField = cardHiddenNumberField;
+                    },
+                    autoComplete: 'cc-hidden-number',
+                    className: `cc-hidden-number`,
+                    style: HiddenNumberStyle,
+                    placeholder: '',
+                    type: 'text',
+                    onKeyUp: this.handleCardHiddenNumberKeyUp
+                  }
+                })}
+                {cardNumberInputRenderer({
+                  handleCardNumberChange: onChange =>
+                    this.handleCardNumberChange({ onChange }),
+                  handleCardNumberBlur: onBlur =>
+                    this.handleCardNumberBlur({ onBlur }),
+                  props: {
+                    id: 'ccNumber',
+                    ref: cardNumberField => {
+                      this.cardNumberField = cardNumberField;
+                    },
+                    autoComplete: 'cc-number',
+                    className: `form-control ${inputClassName}`,
+                    pattern: '[0-9]*',
+                    placeholder: '',
+                    type: 'text',
+                    ...cardNumberInputProps,
+                    onBlur: this.handleCardNumberBlur(),
+                    onChange: this.handleCardNumberChange(),
+                    onKeyPress: this.handleCardNumberKeyPress
+                  }
+                })}
+                <ErrorValidationElement context={this} field={'ccNumber'} />
+              </div>
+            </div>
+            <div className="col-xs-2">
+              <div className="form-group last">
+                <label>{this.translate('Exp Date')}</label>
+                {cardExpiryInputRenderer({
+                  handleCardExpiryChange: onChange =>
+                    this.handleCardExpiryChange({ onChange }),
+                  handleCardExpiryBlur: onBlur =>
+                    this.handleCardExpiryBlur({ onBlur }),
+                  props: {
+                    id: 'ccExpDate',
+                    ref: cardExpiryField => {
+                      this.cardExpiryField = cardExpiryField;
+                    },
+                    autoComplete: 'cc-exp',
+                    className: `form-control ${inputClassName}`,
+                    pattern: '[0-9]*',
+                    placeholder: 'MM/YY',
+                    type: 'text',
+                    ...cardExpiryInputProps,
+                    onBlur: this.handleCardExpiryBlur(),
+                    onChange: this.handleCardExpiryChange(),
+                    onKeyDown: this.handleKeyDown(this.cardNumberField),
+                    onKeyPress: this.handleCardExpiryKeyPress
+                  }
+                })}
+                <ErrorValidationElement context={this} field={'ccExpDate'} />
+              </div>
+            </div>
+            <div className="col-xs-2">
+              <div className="form-group last">
+                <label>{this.translate('CSC')}</label>
+                {cardCVCInputRenderer({
+                  handleCardCVCChange: onChange =>
+                    this.handleCardCVCChange({ onChange }),
+                  handleCardCVCBlur: onBlur =>
+                    this.handleCardCVCBlur({ onBlur }),
+                  props: {
+                    id: 'ccCID',
+                    ref: cvcField => {
+                      this.cvcField = cvcField;
+                    },
+                    autoComplete: 'off',
+                    className: `form-control ${inputClassName}`,
+                    pattern: '[0-9]*',
+                    placeholder: '',
+                    type: 'text',
+                    ...cardCVCInputProps,
+                    onBlur: this.handleCardCVCBlur(),
+                    onChange: this.handleCardCVCChange(),
+                    onKeyDown: this.handleKeyDown(this.cardExpiryField),
+                    onKeyPress: this.handleCardCVCKeyPress
+                  }
+                })}
+                <ErrorValidationElement context={this} field={'ccCID'} />
+              </div>
+            </div>
+          </div>
+          {enableZipInput && (
+            <div className="row">
+              <div className="col-xs-2">
+                <label>{this.translate('Zip')}</label>
+                {cardZipInputRenderer({
+                  handleCardZipChange: onChange =>
+                    this.handleCardZipChange({ onChange }),
+                  handleCardZipBlur: onBlur =>
+                    this.handleCardZipBlur({ onBlur }),
+                  props: {
+                    id: 'zip',
+                    ref: zipField => {
+                      this.zipField = zipField;
+                    },
+                    className: `form-control ${inputClassName}`,
+                    pattern: '[0-9]*',
+                    placeholder: '',
+                    type: 'text',
+                    ...cardZipInputProps,
+                    onBlur: this.handleCardZipBlur(),
+                    onChange: this.handleCardZipChange(),
+                    onKeyDown: this.handleKeyDown(this.cvcField),
+                    onKeyPress: this.handleCardZipKeyPress
+                  }
+                })}
+                <ErrorValidationElement context={this} field={'ccZip'} />
+              </div>
+            </div>
           )}
+          {showError &&
+            errorText && (
+              <DangerText
+                className={dangerTextClassName}
+                styled={dangerTextStyle}
+              >
+                {errorText}
+              </DangerText>
+            )}
+        </div>
       </div>
     );
   };

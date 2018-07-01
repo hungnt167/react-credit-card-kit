@@ -152,11 +152,11 @@ storiesOf('CreditCardForm', module)
   ))
   .add('form', () => (
     <Container style={{ backgroundColor: '#f8f8f8', width: '50%' }}>
-      <CreditCardForm 
-      containerClassName="paypal-by" 
-      enableZipInput={false}
-      showError={false}
-      showPopoverError={true}
+      <CreditCardForm
+        containerClassName="paypal-by"
+        enableZipInput={false}
+        showError={false}
+        showPopoverError={true}
       />
     </Container>
   ))

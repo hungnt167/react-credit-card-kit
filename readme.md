@@ -6,6 +6,9 @@
 
 > A credit/debit card kit for React , based on  [react-credit-card-input](https://github.com/medipass/react-credit-card-input)
 
+
+> Support swipe card
+
 ## Example
 
 [Click here for an interactive demo](https://medipass.github.io/react-credit-card-input)
@@ -82,6 +85,7 @@ import CreditCardFormNPayViaEmail from 'react-credit-card-kit';
   <tr><td>  containerClassName </td><td>string (optional)</td><td>''</td> <td>Class name for the field container</td></tr>
   <tr><td>  containerStyle </td><td>object (optional)</td><td>{}</td> <td>Style for the field container</td></tr>
   <tr><td>  showError </td><td>boolean (optional)</td><td>true</td> <td>Option for show error text</td></tr>
+  <tr><td>  showPopoverError </td><td>boolean (optional)</td><td>false</td> <td>Option for show error popover</td></tr>
   <tr><td>  dangerTextClassName </td><td>string (optional)</td><td>''</td> <td>Class name for the danger text</td></tr>
   <tr><td>  dangerTextStyle </td><td>object (optional)</td><td>{}</td> <td>Style for the danger text container</td></tr>
   <tr><td>  fieldClassName </td><td>string (optional)</td><td>''</td> <td>Class name for the field</td></tr>
