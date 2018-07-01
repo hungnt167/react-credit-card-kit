@@ -1,8 +1,8 @@
 // @flow
 
-const ERROR_TEXT__INVALID_EXPIRY_DATE = 'Expiry date is invalid';
+const ERROR_TEXT__INVALID_EXPIRY_DATE = 'Please enter a valid expiration date';
 const ERROR_TEXT__MONTH_OUT_OF_RANGE = 'Expiry month must be between 01 and 12';
-const ERROR_TEXT__YEAR_OUT_OF_RANGE = 'Expiry year cannot be in the past';
+const ERROR_TEXT__YEAR_OUT_OF_RANGE = 'Your card is expire';
 
 const EXPIRY_DATE_REGEX = /^(\d{2})\/(\d{4}|\d{2})$/;
 const MONTH_REGEX = /(0[1-9]|1[0-2])/;

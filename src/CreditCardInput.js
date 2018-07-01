@@ -234,19 +234,12 @@ export class CreditCardInput extends Component<Props, State> {
     { onBlur }: { onBlur?: ?Function } = { onBlur: null }
   ) => (e: SyntheticInputEvent<*>) => {
     const cardExpiry = e.target.value.split(' / ').join('/');
-    const expiryError = isExpiryInvalid(cardExpiry);
+    let expiryError = isExpiryInvalid(cardExpiry);
 
     if (expiryError) {
-      let message = 'Please enter a valid expiration date';
-     
-      if (expiryError === ERROR_TEXT__YEAR_OUT_OF_RANGE) {
-        message = 'Your card is expire';
-      }
-
       if (!cardExpiry.length) {
-        message = 'This is a required filed';
+        expiryError = 'This is a required filed';
       } 
-
       this.setFieldInvalid(message, { state: 'ccExpDateErrorText' });
     }
 
