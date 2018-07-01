@@ -159,10 +159,13 @@ export class CreditCardInput extends Component<Props, State> {
   ) => (e: SyntheticInputEvent<*>) => {
     let value = e.target.value;
     if (!payment.fns.validateCardNumber(value)) {
-      let message = value.length ? 'Card number is invalid' : 'This is a required field';
+      let message = value.length
+        ? 'Card number is invalid'
+        : 'This is a required field';
 
       if (e.target.value.length === 4) {
-        message = 'The merchant only accepts Discover, American Express, Visa, MasterCard';
+        message =
+          'The merchant only accepts Discover, American Express, Visa, MasterCard';
       }
 
       this.setFieldInvalid(message, {
@@ -239,8 +242,8 @@ export class CreditCardInput extends Component<Props, State> {
     if (expiryError) {
       if (!cardExpiry.length) {
         expiryError = 'This is a required filed';
-      } 
-      this.setFieldInvalid(message, { state: 'ccExpDateErrorText' });
+      }
+      this.setFieldInvalid(expiryError, { state: 'ccExpDateErrorText' });
     }
 
     const { cardExpiryInputProps } = this.props;
@@ -288,7 +291,9 @@ export class CreditCardInput extends Component<Props, State> {
     { onBlur }: { onBlur?: ?Function } = { onBlur: null }
   ) => (e: SyntheticInputEvent<*>) => {
     if (!payment.fns.validateCardCVC(e.target.value)) {
-      let message = e.target.value.length ? 'Please enter a valid CSC' : 'This is a required filed';
+      let message = e.target.value.length
+        ? 'Please enter a valid CSC'
+        : 'This is a required filed';
 
       this.setFieldInvalid(message, {
         state: 'ccCIDErrorText'
@@ -446,7 +451,7 @@ export class CreditCardInput extends Component<Props, State> {
     return cardType.charAt(0).toUpperCase() + cardType.slice(1);
   };
 
-  translate = (word) => {
+  translate = word => {
     return this.props.translator[word] || word;
   };
 
