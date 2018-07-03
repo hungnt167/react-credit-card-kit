@@ -159,8 +159,64 @@ const HiddenNumberStyle = {
   border: 'none',
   background: 'transparent',
   position: 'absolute',
-  outline: 'none'
+  outline: 'none',
+  top: 0,
+  left: 0
 };
+
+const NumberWrapper = styled.div`
+    position: relative;
+
+    & > input {
+        text-align: right;
+    }
+
+    & #ccNumberdMasked {
+        width: 10em;
+        border-radius: 0;
+        background-color: #ffffff;
+        border-width: 0 0 1px;
+        border-bottom: solid 1px #d9d9d9;
+        padding: 0 11px;
+        cursor: pointer;
+        line-height: 22px;
+        padding-top: 1px;
+        padding-bottom: 6px;
+        padding-left: 0;
+    }
+
+    & > #ccNumberdUnmasked {
+        width: 3em;
+        text-align: left;
+        border-radius: 0;
+        background-color: #ffffff;
+        border-width: 0 0 1px;
+        border-bottom: solid 1px #d9d9d9;
+        padding: 0 11px;
+        cursor: pointer;
+        line-height: 22px;
+        padding-top: 1px;
+        padding-bottom: 6px;
+        padding-left: 0;
+    }
+
+    & #ccNumber { 
+        position: absolute;
+        left: 0;
+        opacity: 0;
+        width: 13em;
+    }
+`;
+
+const CIDWrapper = styled.div`
+    position: relative;
+
+    & #ccCID { 
+        position: absolute;
+        left: 0;
+        opacity: 0;
+    }
+`;
 
 export {
   Container,
@@ -172,5 +228,7 @@ export {
   FormFieldLabel,
   FormInputWrapper,
   ErrorValidationElement,
-  HiddenNumberStyle
+  HiddenNumberStyle,
+  NumberWrapper,
+  CIDWrapper
 };

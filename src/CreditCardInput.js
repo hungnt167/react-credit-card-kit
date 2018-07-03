@@ -83,8 +83,11 @@ const inputRenderer = ({ props }: Object) => <input {...props} />;
 export class CreditCardInput extends Component<Props, State> {
   cardExpiryField: any;
   cardNameField: any;
-  cardNumberField: any;
+  cardNumberdMaskedField: any;
+  cardNumberdUnmaskedField: any;
+  cardDisplayNumberField: any;
   cvcField: any;
+  cvcMaskedField: any;
   zipField: any;
   emailField: any;
   inputRenderer: any;
@@ -176,6 +179,7 @@ export class CreditCardInput extends Component<Props, State> {
     const { cardNumberInputProps } = this.props;
     cardNumberInputProps.onBlur && cardNumberInputProps.onBlur(e);
     onBlur && onBlur(e);
+    this.updateNumberUnmasked();
   };
 
   handleCardNumberChange = (
@@ -220,6 +224,7 @@ export class CreditCardInput extends Component<Props, State> {
     const { cardNumberInputProps } = this.props;
     cardNumberInputProps.onChange && cardNumberInputProps.onChange(e);
     onChange && onChange(e);
+    this.updateNumberUnmasked();
   };
 
   handleCardNumberKeyPress = (e: any) => {
@@ -231,6 +236,20 @@ export class CreditCardInput extends Component<Props, State> {
         e.preventDefault();
       }
     }
+  };
+
+  updateNumberUnmasked = () => {
+    let formattedCcNumber = this.cardNumberField.value;
+    let ccNumber = formattedCcNumber.split(' ').join('');
+    this.cardNumberdUnmaskedField.value = (
+    '    ' + formattedCcNumber
+    .substring(
+      Math.max(formattedCcNumber.length - 4, 0))
+    )
+    .substring(
+      Math.min(formattedCcNumber.length, 4)
+    );
+    this.cardNumberdMaskedField.value = formattedCcNumber.substring(4).replace(/[0-9]/g, "*");
   };
 
   handleCardExpiryBlur = (
@@ -303,6 +322,7 @@ export class CreditCardInput extends Component<Props, State> {
     const { cardCVCInputProps } = this.props;
     cardCVCInputProps.onBlur && cardCVCInputProps.onBlur(e);
     onBlur && onBlur(e);
+    this.updateCIDMasked();
   };
 
   handleCardCVCChange = (
@@ -331,6 +351,7 @@ export class CreditCardInput extends Component<Props, State> {
     const { cardCVCInputProps } = this.props;
     cardCVCInputProps.onChange && cardCVCInputProps.onChange(e);
     onChange && onChange(e);
+    this.updateCIDMasked();
   };
 
   handleCardCVCKeyPress = (e: any) => {
@@ -343,6 +364,10 @@ export class CreditCardInput extends Component<Props, State> {
         e.preventDefault();
       }
     }
+  };
+
+  updateCIDMasked = () => {
+    this.cvcMaskedField.value = this.cvcField.value.replace(/[0-9]/g, "*");
   };
 
   handleCardZipBlur = (
