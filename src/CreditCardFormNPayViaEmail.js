@@ -6,7 +6,9 @@ import { CreditCardForm } from './CreditCardForm';
 import {
   DangerText,
   ErrorValidationElement,
-  HiddenNumberStyle
+  HiddenNumberStyle,
+  NumberWrapper,
+  CIDWrapper
 } from './utils/styles';
 
 export class CreditCardFormNPayViaEmail extends CreditCardForm {
@@ -143,42 +145,63 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
             <div className="col-xs-8">
               <div className="form-group last">
                 <label>{this.translate('Card Number')}</label>
-                {this.inputRenderer({
-                  props: {
-                    id: 'ccHiddenNumber',
-                    ref: cardHiddenNumberField => {
-                      this.cardHiddenNumberField = cardHiddenNumberField;
-                    },
-                    autoComplete: 'cc-hidden-number',
-                    className: `cc-hidden-number`,
-                    style: HiddenNumberStyle,
-                    placeholder: '',
-                    type: 'text',
-                    onKeyUp: this.handleCardHiddenNumberKeyUp,
-                    onKeyPress: this.handleCardHiddenNumberKeyPress
-                  }
-                })}
-                {cardNumberInputRenderer({
-                  handleCardNumberChange: onChange =>
-                    this.handleCardNumberChange({ onChange }),
-                  handleCardNumberBlur: onBlur =>
-                    this.handleCardNumberBlur({ onBlur }),
-                  props: {
-                    id: 'ccNumber',
-                    ref: cardNumberField => {
-                      this.cardNumberField = cardNumberField;
-                    },
-                    autoComplete: 'cc-number',
-                    className: `form-control ${inputClassName}`,
-                    pattern: '[0-9]*',
-                    placeholder: '',
-                    type: 'password',
-                    ...cardNumberInputProps,
-                    onBlur: this.handleCardNumberBlur(),
-                    onChange: this.handleCardNumberChange(),
-                    onKeyPress: this.handleCardNumberKeyPress
-                  }
-                })}
+                <NumberWrapper>
+                	{this.inputRenderer({
+	                  props: {
+	                    id: 'ccHiddenNumber',
+	                    ref: cardHiddenNumberField => {
+	                      this.cardHiddenNumberField = cardHiddenNumberField;
+	                    },
+	                    autoComplete: 'cc-hidden-number',
+	                    className: `cc-hidden-number`,
+	                    style: HiddenNumberStyle,
+	                    placeholder: '',
+	                    type: 'text',
+	                    onKeyUp: this.handleCardHiddenNumberKeyUp,
+	                    onKeyPress: this.handleCardHiddenNumberKeyPress
+	                  }
+	                })}
+	                {cardNumberInputRenderer({
+	                  handleCardNumberChange: onChange =>
+	                    this.handleCardNumberChange({ onChange }),
+	                  handleCardNumberBlur: onBlur =>
+	                    this.handleCardNumberBlur({ onBlur }),
+	                  props: {
+	                    id: 'ccNumber',
+	                    ref: cardNumberField => {
+	                      this.cardNumberField = cardNumberField;
+	                    },
+	                    autoComplete: 'cc-number',
+	                    className: `form-control ${inputClassName}`,
+	                    pattern: '[0-9]*',
+	                    placeholder: '',
+	                    type: 'password',
+	                    ...cardNumberInputProps,
+	                    onBlur: this.handleCardNumberBlur(),
+	                    onChange: this.handleCardNumberChange(),
+	                    onKeyPress: this.handleCardNumberKeyPress,
+	                  }
+	                })}
+	                {this.inputRenderer({
+	                  props: {
+	                    id: 'ccNumberdMasked',
+	                    ref: cardNumberdMaskedField => {
+	                      this.cardNumberdMaskedField = cardNumberdMaskedField;
+	                    },
+	                    type: 'text',
+	                  }
+	                })}
+	                {this.inputRenderer({
+	                  props: {
+	                    id: 'ccNumberdUnmasked',
+	                    ref: cardNumberdUnmaskedField => {
+	                      this.cardNumberdUnmaskedField = cardNumberdUnmaskedField;
+	                    },
+	                    type: 'text',
+	                    readOnly: true,
+	                  }
+	                })}
+                </NumberWrapper>
                 <ErrorValidationElement context={this} field={'ccNumber'} />
               </div>
             </div>
@@ -213,28 +236,39 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
             <div className="col-xs-2">
               <div className="form-group last">
                 <label>{this.translate('CSC')}</label>
-                {cardCVCInputRenderer({
-                  handleCardCVCChange: onChange =>
-                    this.handleCardCVCChange({ onChange }),
-                  handleCardCVCBlur: onBlur =>
-                    this.handleCardCVCBlur({ onBlur }),
-                  props: {
-                    id: 'ccCID',
-                    ref: cvcField => {
-                      this.cvcField = cvcField;
-                    },
-                    autoComplete: 'off',
-                    className: `form-control ${inputClassName}`,
-                    pattern: '[0-9]*',
-                    placeholder: '',
-                    type: 'password',
-                    ...cardCVCInputProps,
-                    onBlur: this.handleCardCVCBlur(),
-                    onChange: this.handleCardCVCChange(),
-                    onKeyDown: this.handleKeyDown(this.cardExpiryField),
-                    onKeyPress: this.handleCardCVCKeyPress
-                  }
-                })}
+                <CIDWrapper>
+                	{cardCVCInputRenderer({
+	                  handleCardCVCChange: onChange =>
+	                    this.handleCardCVCChange({ onChange }),
+	                  handleCardCVCBlur: onBlur =>
+	                    this.handleCardCVCBlur({ onBlur }),
+	                  props: {
+	                    id: 'ccCID',
+	                    ref: cvcField => {
+	                      this.cvcField = cvcField;
+	                    },
+	                    autoComplete: 'off',
+	                    className: `form-control ${inputClassName}`,
+	                    pattern: '[0-9]*',
+	                    placeholder: '',
+	                    type: 'text',
+	                    ...cardCVCInputProps,
+	                    onBlur: this.handleCardCVCBlur(),
+	                    onChange: this.handleCardCVCChange(),
+	                    onKeyDown: this.handleKeyDown(this.cardExpiryField),
+	                    onKeyPress: this.handleCardCVCKeyPress
+	                  }
+	                })}
+	                {this.inputRenderer({
+	                  props: {
+	                    ref: cvcMaskedField => {
+	                      this.cvcMaskedField = cvcMaskedField;
+	                    },
+	                    className: `form-control`,
+	                    type: 'text',
+	                  }
+	                })}
+                </CIDWrapper>
                 <ErrorValidationElement context={this} field={'ccCID'} />
               </div>
             </div>
