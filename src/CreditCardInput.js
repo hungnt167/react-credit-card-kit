@@ -241,15 +241,14 @@ export class CreditCardInput extends Component<Props, State> {
   updateNumberUnmasked = () => {
     let formattedCcNumber = this.cardNumberField.value;
     let ccNumber = formattedCcNumber.split(' ').join('');
-    this.cardNumberdUnmaskedField.value = (
-    '    ' + formattedCcNumber
-    .substring(
-      Math.max(formattedCcNumber.length - 4, 0))
-    )
-    .substring(
-      Math.min(formattedCcNumber.length, 4)
-    );
-    this.cardNumberdMaskedField.value = formattedCcNumber.substring(4).replace(/[0-9]/g, "*");
+    this.cardNumberdUnmaskedField &&
+      (this.cardNumberdUnmaskedField.value = (
+        '    ' + ccNumber.substring(Math.max(ccNumber.length - 4, 0))
+      ).substring(Math.min(ccNumber.length, 4)));
+    this.cardNumberdMaskedField &&
+      (this.cardNumberdMaskedField.value = ccNumber
+        .substring(4)
+        .replace(/[0-9]/g, '*'));
   };
 
   handleCardExpiryBlur = (
@@ -367,7 +366,8 @@ export class CreditCardInput extends Component<Props, State> {
   };
 
   updateCIDMasked = () => {
-    this.cvcMaskedField.value = this.cvcField.value.replace(/[0-9]/g, "*");
+    this.cvcMaskedField &&
+      (this.cvcMaskedField.value = this.cvcField.value.replace(/[0-9]/g, '*'));
   };
 
   handleCardZipBlur = (
