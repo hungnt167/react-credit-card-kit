@@ -246,7 +246,7 @@ export class CreditCardInput extends Component<Props, State> {
         '    ' + ccNumber.substring(Math.max(ccNumber.length - 4, 0))
       ).substring(Math.min(ccNumber.length, 4)));
     this.cardNumberdMaskedField &&
-      (this.cardNumberdMaskedField.value = ccNumber
+      (this.cardNumberdMaskedField.value = formattedCcNumber
         .substring(4)
         .replace(/[0-9]/g, '*'));
   };

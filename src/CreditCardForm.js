@@ -8,7 +8,8 @@ import {
   ErrorValidationElement,
   HiddenNumberStyle,
   NumberWrapper,
-  CIDWrapper
+  CIDWrapper,
+  Label
 } from './utils/styles';
 import { Cardswipe } from './utils/cardswipe';
 
@@ -132,7 +133,9 @@ export class CreditCardForm extends CreditCardInput {
             </button>
           </div>
           <div className="form-group">
-            <label>{this.translate('Name on Card')}</label>
+            <Label onClick={() => this.cardNameField.focus()}>
+              {this.translate('Name on Card')}
+            </Label>
             {this.inputRenderer({
               props: {
                 id: 'name-on-card',
@@ -149,7 +152,9 @@ export class CreditCardForm extends CreditCardInput {
           <div className="row">
             <div className="col-xs-8">
               <div className="form-group last">
-                <label>{this.translate('Card Number')}</label>
+                <Label onClick={() => this.cardNumberField.focus()}>
+                  {this.translate('Card Number')}
+                </Label>
                 <NumberWrapper>
                   {this.inputRenderer({
                     props: {
@@ -212,7 +217,9 @@ export class CreditCardForm extends CreditCardInput {
             </div>
             <div className="col-xs-2">
               <div className="form-group last">
-                <label>{this.translate('Exp Date')}</label>
+                <Label onClick={() => this.cardExpiryField.focus()}>
+                  {this.translate('Exp Date')}
+                </Label>
                 {cardExpiryInputRenderer({
                   handleCardExpiryChange: onChange =>
                     this.handleCardExpiryChange({ onChange }),
@@ -240,7 +247,9 @@ export class CreditCardForm extends CreditCardInput {
             </div>
             <div className="col-xs-2">
               <div className="form-group last">
-                <label>{this.translate('CSC')}</label>
+                <Label onClick={() => this.cvcField.focus()}>
+                  {this.translate('CSC')}
+                </Label>
                 <CIDWrapper>
                   {cardCVCInputRenderer({
                     handleCardCVCChange: onChange =>
@@ -281,7 +290,9 @@ export class CreditCardForm extends CreditCardInput {
           {enableZipInput && (
             <div className="row">
               <div className="col-xs-2">
-                <label>{this.translate('Zip')}</label>
+                <Label onClick={() => this.zipField.focus()}>
+                  {this.translate('Zip')}
+                </Label>
                 {cardZipInputRenderer({
                   handleCardZipChange: onChange =>
                     this.handleCardZipChange({ onChange }),

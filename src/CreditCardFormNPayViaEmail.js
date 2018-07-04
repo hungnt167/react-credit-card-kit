@@ -8,7 +8,8 @@ import {
   ErrorValidationElement,
   HiddenNumberStyle,
   NumberWrapper,
-  CIDWrapper
+  CIDWrapper,
+  Label
 } from './utils/styles';
 
 export class CreditCardFormNPayViaEmail extends CreditCardForm {
@@ -47,7 +48,7 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
     { onChange }: { onChange?: ?Function } = { onChange: null }
   ) => (e: SyntheticInputEvent<*>) => {
     if (!this.isEmail(e.target.value)) {
-      this.setFieldInvalid('email is invalid', {
+      this.setFieldInvalid('Please enter a valid email address', {
         state: 'ccEmailErrorText'
       });
     } else {
@@ -68,7 +69,6 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
       ccCIDErrorText,
       ccZipErrorText,
       ccEmailErrorText,
-      showDetailError,
       isReadyToSwipe
     } = this.state;
     const {
@@ -130,7 +130,9 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
             </button>
           </div>
           <div className="form-group">
-            <label>{this.translate('Name on Card')}</label>
+            <Label onClick={() => this.cardNameField.focus()}>
+              {this.translate('Name on Card')}
+            </Label>
             {this.inputRenderer({
               props: {
                 id: 'name-on-card',
@@ -148,7 +150,9 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
           <div className="row">
             <div className="col-xs-8">
               <div className="form-group last">
-                <label>{this.translate('Card Number')}</label>
+                <Label onClick={() => this.cardNumberField.focus()}>
+                  {this.translate('Card Number')}
+                </Label>
                 <NumberWrapper>
                   {this.inputRenderer({
                     props: {
@@ -211,7 +215,9 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
             </div>
             <div className="col-xs-2">
               <div className="form-group last">
-                <label>{this.translate('Exp Date')}</label>
+                <Label onClick={() => this.cardExpiryField.focus()}>
+                  {this.translate('Exp Date')}
+                </Label>
                 {cardExpiryInputRenderer({
                   handleCardExpiryChange: onChange =>
                     this.handleCardExpiryChange({ onChange }),
@@ -239,7 +245,9 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
             </div>
             <div className="col-xs-2">
               <div className="form-group last">
-                <label>{this.translate('CSC')}</label>
+                <Label onClick={() => this.cvcField.focus()}>
+                  {this.translate('CSC')}
+                </Label>
                 <CIDWrapper>
                   {cardCVCInputRenderer({
                     handleCardCVCChange: onChange =>
@@ -280,7 +288,9 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
           {enableZipInput && (
             <div className="row">
               <div className="col-xs-2">
-                <label>{this.translate('Zip')}</label>
+                <Label onClick={() => this.zipField.focus()}>
+                  {this.translate('Zip')}
+                </Label>
                 {cardZipInputRenderer({
                   handleCardZipChange: onChange =>
                     this.handleCardZipChange({ onChange }),
@@ -320,7 +330,9 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
         </div>
         <div role="tabpanel" className="tab-pane by-email">
           <div className="form-group last">
-            <label>{this.translate('Email')}</label>
+            <Label onClick={() => this.emailField.focus()}>
+              {this.translate('Email')}
+            </Label>
             {this.inputRenderer({
               props: {
                 id: 'ccEmail',

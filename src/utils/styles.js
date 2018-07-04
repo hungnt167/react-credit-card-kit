@@ -175,6 +175,7 @@ const NumberWrapper = styled.div`
     width: 10em;
     border-radius: 0;
     background-color: #ffffff;
+    color: #797979;
     border-width: 0 0 1px;
     border-bottom: solid 1px #d9d9d9;
     padding: 0 11px;
@@ -190,6 +191,7 @@ const NumberWrapper = styled.div`
     text-align: left;
     border-radius: 0;
     background-color: #ffffff;
+    color: #797979;
     border-width: 0 0 1px;
     border-bottom: solid 1px #d9d9d9;
     padding: 0 11px;
@@ -218,6 +220,10 @@ const CIDWrapper = styled.div`
   }
 `;
 
+const Label = styled.label`
+  cursor: pointer;
+`;
+
 export {
   Container,
   FieldWrapper,
@@ -230,5 +236,6 @@ export {
   ErrorValidationElement,
   HiddenNumberStyle,
   NumberWrapper,
-  CIDWrapper
+  CIDWrapper,
+  Label
 };
