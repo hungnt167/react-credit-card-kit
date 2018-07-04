@@ -158,6 +158,7 @@ const HiddenNumberStyle = {
   height: '1px',
   border: 'none',
   background: 'transparent',
+  caretColor: 'transparent',
   position: 'absolute',
   outline: 'none',
   top: 0,
@@ -172,7 +173,7 @@ const NumberWrapper = styled.div`
   }
 
   & #ccNumberdMasked {
-    width: 77%;
+    width: 60%;
     border-radius: 0;
     background-color: #ffffff;
     color: #797979;
@@ -187,7 +188,7 @@ const NumberWrapper = styled.div`
   }
 
   & > #ccNumberdUnmasked {
-    width: 23%;
+    width: 30%;
     text-align: left;
     border-radius: 0;
     background-color: #ffffff;

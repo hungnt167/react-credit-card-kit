@@ -167,8 +167,12 @@ export class CreditCardInput extends Component<Props, State> {
         : 'This is a required field';
 
       if (e.target.value.length === 4) {
-        message =
-          'The merchant only accepts Discover, American Express, Visa, MasterCard';
+        message = (
+          <span>
+            The merchant only accepts Discover, <br /> American Express, Visa,
+            MasterCard
+          </span>
+        );
       }
 
       this.setFieldInvalid(message, {

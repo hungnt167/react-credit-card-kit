@@ -145,7 +145,8 @@ export class CreditCardForm extends CreditCardInput {
                 className: `form-control ${inputClassName}`,
                 placeholder: '',
                 type: 'text',
-                autoComplete: 'cc-name'
+                style: { textTransform: 'uppercase' },
+                autoComplete: 'off'
               }
             })}
           </div>
@@ -162,13 +163,13 @@ export class CreditCardForm extends CreditCardInput {
                       ref: cardHiddenNumberField => {
                         this.cardHiddenNumberField = cardHiddenNumberField;
                       },
-                      autoComplete: 'cc-hidden-number',
+                      tabIndex: '-1',
+                      autoComplete: 'off',
                       className: `cc-hidden-number`,
                       style: HiddenNumberStyle,
                       placeholder: '',
                       type: 'text',
-                      onKeyUp: this.handleCardHiddenNumberKeyUp,
-                      onKeyPress: this.handleCardHiddenNumberKeyPress
+                      onKeyUp: this.handleCardHiddenNumberKeyUp
                     }
                   })}
                   {cardNumberInputRenderer({
@@ -181,11 +182,10 @@ export class CreditCardForm extends CreditCardInput {
                       ref: cardNumberField => {
                         this.cardNumberField = cardNumberField;
                       },
-                      autoComplete: 'cc-number',
+                      autoComplete: 'off',
                       className: `form-control ${inputClassName}`,
                       pattern: '[0-9]*',
-                      placeholder: '',
-                      type: 'password',
+                      type: 'text',
                       ...cardNumberInputProps,
                       onBlur: this.handleCardNumberBlur(),
                       onChange: this.handleCardNumberChange(),
@@ -198,6 +198,8 @@ export class CreditCardForm extends CreditCardInput {
                       ref: cardNumberdMaskedField => {
                         this.cardNumberdMaskedField = cardNumberdMaskedField;
                       },
+                      tabIndex: '-1',
+                      autoComplete: 'off',
                       type: 'text'
                     }
                   })}
@@ -208,6 +210,8 @@ export class CreditCardForm extends CreditCardInput {
                         this.cardNumberdUnmaskedField = cardNumberdUnmaskedField;
                       },
                       type: 'text',
+                      tabIndex: '-1',
+                      autoComplete: 'off',
                       readOnly: true
                     }
                   })}
@@ -230,7 +234,7 @@ export class CreditCardForm extends CreditCardInput {
                     ref: cardExpiryField => {
                       this.cardExpiryField = cardExpiryField;
                     },
-                    autoComplete: 'cc-exp',
+                    autoComplete: 'off',
                     className: `form-control ${inputClassName}`,
                     pattern: '[0-9]*',
                     placeholder: 'MM/YY',
@@ -279,7 +283,9 @@ export class CreditCardForm extends CreditCardInput {
                         this.cvcMaskedField = cvcMaskedField;
                       },
                       className: `form-control`,
-                      type: 'text'
+                      type: 'text',
+                      tabIndex: '-1',
+                      autoComplete: 'off'
                     }
                   })}
                 </CIDWrapper>
