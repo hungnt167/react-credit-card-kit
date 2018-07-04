@@ -172,7 +172,7 @@ const NumberWrapper = styled.div`
   }
 
   & #ccNumberdMasked {
-    width: 10em;
+    width: 77%;
     border-radius: 0;
     background-color: #ffffff;
     color: #797979;
@@ -187,7 +187,7 @@ const NumberWrapper = styled.div`
   }
 
   & > #ccNumberdUnmasked {
-    width: 3em;
+    width: 23%;
     text-align: left;
     border-radius: 0;
     background-color: #ffffff;
@@ -206,7 +206,7 @@ const NumberWrapper = styled.div`
     position: absolute;
     left: 0;
     opacity: 0;
-    width: 13em;
+    width: 100%;
   }
 `;
 
