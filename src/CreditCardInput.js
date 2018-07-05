@@ -14,9 +14,7 @@ import {
   isHighlighted
 } from './utils/formatter';
 import images from './utils/images';
-import isExpiryInvalid, {
-  ERROR_TEXT__YEAR_OUT_OF_RANGE
-} from './utils/is-expiry-invalid';
+import isExpiryInvalid from './utils/is-expiry-invalid';
 
 import {
   Container,
@@ -85,7 +83,6 @@ export class CreditCardInput extends Component<Props, State> {
   cardNameField: any;
   cardNumberdMaskedField: any;
   cardNumberdUnmaskedField: any;
-  cardDisplayNumberField: any;
   cvcField: any;
   cvcMaskedField: any;
   zipField: any;
@@ -477,7 +474,7 @@ export class CreditCardInput extends Component<Props, State> {
 
   getType = () => {
     let cardType = payment.fns.cardType(this.state.cardNumber);
-    return cardType.charAt(0).toUpperCase() + cardType.slice(1);
+    return cardType && cardType.charAt(0).toUpperCase() + cardType.slice(1);
   };
 
   translate = word => {

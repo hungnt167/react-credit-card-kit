@@ -132,6 +132,12 @@ const ErrorValidationElement = ({ field, context }) =>
         onClick={() =>
           context.showDetailError && context.showDetailError(field)
         }
+        onMouseEnter={() =>
+          context.showDetailError && context.showDetailError(field)
+        }
+        onMouseLeave={() =>
+          context.showDetailError && context.showDetailError(field)
+        }
         style={{
           display: context.state[field + 'ErrorText'] ? 'block' : 'none'
         }}
