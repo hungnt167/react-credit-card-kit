@@ -23,7 +23,7 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
   };
 
   isEmail = email => {
-    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let re = /^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
     return re.test(String(email).toLowerCase());
   };
 
@@ -76,7 +76,6 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
       cardZipInputProps,
       cardExpiryInputProps,
       cardNumberInputProps,
-      cardNameInputProps,
       emailInputProps,
       cardCVCInputRenderer,
       cardExpiryInputRenderer,

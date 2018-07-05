@@ -179,7 +179,7 @@ const NumberWrapper = styled.div`
   }
 
   & #ccNumberdMasked {
-    width: 60%;
+    width: 70%;
     border-radius: 0;
     background-color: #ffffff;
     color: #797979;
