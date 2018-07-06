@@ -15,7 +15,9 @@ export default (expiryDate: string) => {
 
   const expiryMonth = splitDate[0];
   if (!MONTH_REGEX.test(expiryMonth)) {
-    return ERROR_TEXT__MONTH_OUT_OF_RANGE;
+    // BA want
+    return ERROR_TEXT__INVALID_EXPIRY_DATE;
+    // return ERROR_TEXT__MONTH_OUT_OF_RANGE;
   }
 
   const expiryYear = splitDate[1];
@@ -30,7 +32,7 @@ export default (expiryDate: string) => {
 
   if (
     currentYear > parseInt(expiryYear, 10) ||
-    (isSameYear && parseInt(expiryMonth, 10) < (current.getMonth() + 1) )
+    (isSameYear && parseInt(expiryMonth, 10) < current.getMonth() + 1)
   ) {
     return ERROR_TEXT__YEAR_OUT_OF_RANGE;
   }

@@ -167,6 +167,7 @@ storiesOf('CreditCardForm', module)
         controlClassName="checkpaypal-by"
         enableZipInput={false}
         showError={false}
+        autoFocus={false}
         showPopoverError={true}
         afterValidateCard={isValid => console.log(isValid)}
       />

@@ -60,7 +60,8 @@ type Props = {
   inputStyle: Object,
   invalidClassName: string,
   invalidStyle: Object,
-  translator: Object
+  translator: Object,
+  autoFocus: boolean
 };
 type State = {
   cardImage: string,
@@ -118,7 +119,8 @@ export class CreditCardInput extends Component<Props, State> {
     inputStyle: {},
     invalidClassName: 'is-invalid',
     invalidStyle: {},
-    translator: {}
+    translator: {},
+    autoFocus: true
   };
 
   constructor(props: Props) {
@@ -171,7 +173,6 @@ export class CreditCardInput extends Component<Props, State> {
           </span>
         );
       }
-
       this.setFieldInvalid(message, {
         state: 'ccNumberErrorText'
       });
@@ -186,15 +187,26 @@ export class CreditCardInput extends Component<Props, State> {
   handleCardNumberChange = (
     { onChange }: { onChange?: ?Function } = { onChange: null }
   ) => (e: SyntheticInputEvent<*>) => {
-    const cardNumber = e.target.value;
-    const cardNumberLength = cardNumber.split(' ').join('').length;
+    let cardNumber = e.target.value;
+    let cardNumberLength = cardNumber.split(' ').join('').length;
     const cardType = payment.fns.cardType(cardNumber);
     const cardTypeInfo =
       creditCardType.getTypeInfo(creditCardType.types[CARD_TYPES[cardType]]) ||
       {};
     const cardTypeLengths = cardTypeInfo.lengths || [16];
 
-    this.cardNumberField.value = formatCardNumber(cardNumber);
+    if (
+      !this.props.autoFocus &&
+      cardNumberLength > Math.max(...cardTypeLengths)
+    ) {
+      cardNumber = cardNumber.substring(0, cardNumber.length - 1);
+      cardNumberLength--;
+    }
+
+    this.cardNumberField.value = formatCardNumber(cardNumber).replace(
+      /[^0-9]+/,
+      ''
+    );
 
     this.setState({
       cardImage: images[cardType] || images.placeholder,
@@ -211,7 +223,7 @@ export class CreditCardInput extends Component<Props, State> {
           length === cardNumberLength &&
           payment.fns.validateCardNumber(cardNumber)
         ) {
-          this.cardExpiryField.focus();
+          this.props.autoFocus && this.cardExpiryField.focus();
           break;
         }
         if (cardNumberLength === lastCardTypeLength) {
@@ -242,10 +254,18 @@ export class CreditCardInput extends Component<Props, State> {
   updateNumberUnmasked = () => {
     let formattedCcNumber = this.cardNumberField.value;
     let ccNumber = formattedCcNumber.split(' ').join('');
+
+    let numberUnmasked = (
+      '    ' + ccNumber.substring(Math.max(ccNumber.length - 4, 0))
+    ).substring(Math.min(ccNumber.length, 4));
+
+    if (ccNumber.length < 8) {
+      numberUnmasked = numberUnmasked.replace(/[0-9]/g, '*');
+    }
+
     this.cardNumberdUnmaskedField &&
-      (this.cardNumberdUnmaskedField.value = (
-        '    ' + ccNumber.substring(Math.max(ccNumber.length - 4, 0))
-      ).substring(Math.min(ccNumber.length, 4)));
+      (this.cardNumberdUnmaskedField.value = numberUnmasked);
+
     this.cardNumberdMaskedField &&
       (this.cardNumberdMaskedField.value = formattedCcNumber
         .substring(4)
@@ -273,21 +293,23 @@ export class CreditCardInput extends Component<Props, State> {
   handleCardExpiryChange = (
     { onChange }: { onChange?: ?Function } = { onChange: null }
   ) => (e: SyntheticInputEvent<*>) => {
-    const cardExpiry = e.target.value.split(' / ').join('/');
+    let cardExpiry = e.target.value.split(' / ').join('/');
+
+    if (!this.props.autoFocus && cardExpiry.length > 5) {
+      cardExpiry = cardExpiry.substring(0, cardExpiry.length - 1);
+    }
 
     this.cardExpiryField.value = formatExpiry(cardExpiry);
 
     this.setFieldValid({ state: 'ccExpDateErrorText' });
 
     const expiryError = isExpiryInvalid(cardExpiry);
-    if (cardExpiry.length > 4) {
-      if (expiryError) {
-        this.setFieldInvalid(expiryError, {
-          state: 'ccExpDateErrorText'
-        });
-      } else {
-        this.cvcField.focus();
-      }
+    if (expiryError) {
+      this.setFieldInvalid(expiryError, {
+        state: 'ccExpDateErrorText'
+      });
+    } else {
+      this.props.autoFocus && this.cvcField.focus();
     }
 
     const { cardExpiryInputProps } = this.props;
@@ -328,24 +350,41 @@ export class CreditCardInput extends Component<Props, State> {
   handleCardCVCChange = (
     { onChange }: { onChange?: ?Function } = { onChange: null }
   ) => (e: SyntheticInputEvent<*>) => {
-    const CVC = e.target.value;
-    const CVCLength = CVC.length;
+    let CVC = e.target.value;
+    let CVCLength = CVC.length;
     const isZipFieldAvailable = this.props.enableZipInput && this.state.showZip;
     const cardType = payment.fns.cardType(this.state.cardNumber);
+
+    const cardTypeInfo =
+      creditCardType.getTypeInfo(creditCardType.types[CARD_TYPES[cardType]]) ||
+      {};
+
+    if (
+      cardTypeInfo &&
+      !this.props.autoFocus &&
+      CVCLength > cardTypeInfo.code.size
+    ) {
+      CVC = CVC.substring(0, CVC.length - 1);
+      CVCLength--;
+    }
+
+    if (CVCLength) {
+      CVC = CVC.replace(/[^0-9]+/, '');
+    }
+
+    this.cvcField && (this.cvcField.value = CVC);
 
     this.setFieldValid({
       state: 'ccCIDErrorText'
     });
-    if (CVCLength >= 4) {
-      if (!payment.fns.validateCardCVC(CVC, cardType)) {
-        this.setFieldInvalid('Please enter a valid CSC', {
-          state: 'ccCIDErrorText'
-        });
-      }
+    if (!payment.fns.validateCardCVC(CVC, cardType)) {
+      this.setFieldInvalid('Please enter a valid CSC', {
+        state: 'ccCIDErrorText'
+      });
     }
 
     if (isZipFieldAvailable && hasCVCReachedMaxLength(cardType, CVCLength)) {
-      this.zipField.focus();
+      this.props.autoFocus && this.zipField.focus();
     }
 
     const { cardCVCInputProps } = this.props;
@@ -421,7 +460,7 @@ export class CreditCardInput extends Component<Props, State> {
   handleKeyDown = (ref: any) => {
     return (e: SyntheticInputEvent<*>) => {
       if (e.keyCode === BACKSPACE_KEY_CODE && !e.target.value) {
-        ref.focus();
+        this.props.autoFocus && ref.focus();
       }
     };
   };

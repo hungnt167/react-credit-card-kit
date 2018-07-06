@@ -69,6 +69,7 @@ export class CreditCardForm extends CreditCardInput {
         ccZipErrorText: null
       });
 
+      this.cardHiddenNumberField && (this.cardHiddenNumberField.value = '');
       this.cardHiddenNumberField && this.cardHiddenNumberField.focus();
       this.cardNameField && (this.cardNameField.value = '');
       this.cardNumberField && (this.cardNumberField.value = '');
@@ -96,6 +97,30 @@ export class CreditCardForm extends CreditCardInput {
       this.handleCardExpiryChange()({ target: { value: expiry } });
       this.cvcField.focus();
       this.setState({ isReadyToSwipe: !this.state.isReadyToSwipe });
+    }
+  };
+
+  handleCardNameKeyUp = async event => {
+    if (event.keyCode === 13) {
+      this.cardNumberField && this.cardNumberField.focus();
+    }
+  };
+
+  handleCardNumberKeyUp = async event => {
+    if (event.keyCode === 13) {
+      this.cardExpiryField && this.cardExpiryField.focus();
+    }
+  };
+
+  handleCardExpiryKeyUp = async event => {
+    if (event.keyCode === 13) {
+      this.cvcField && this.cvcField.focus();
+    }
+  };
+
+  handleCardCVCKeyUp = async event => {
+    if (event.keyCode === 13) {
+      this.zipField && this.zipField.focus();
     }
   };
 
@@ -146,7 +171,8 @@ export class CreditCardForm extends CreditCardInput {
                 placeholder: '',
                 type: 'text',
                 style: { textTransform: 'uppercase' },
-                autoComplete: 'off'
+                autoComplete: 'off',
+                onKeyUp: this.handleCardNameKeyUp
               }
             })}
           </div>
@@ -188,7 +214,8 @@ export class CreditCardForm extends CreditCardInput {
                       ...cardNumberInputProps,
                       onBlur: this.handleCardNumberBlur(),
                       onChange: this.handleCardNumberChange(),
-                      onKeyPress: this.handleCardNumberKeyPress
+                      onKeyPress: this.handleCardNumberKeyPress,
+                      onKeyUp: this.handleCardNumberKeyUp
                     }
                   })}
                   {this.inputRenderer({
@@ -241,7 +268,8 @@ export class CreditCardForm extends CreditCardInput {
                     onBlur: this.handleCardExpiryBlur(),
                     onChange: this.handleCardExpiryChange(),
                     onKeyDown: this.handleKeyDown(this.cardNumberField),
-                    onKeyPress: this.handleCardExpiryKeyPress
+                    onKeyPress: this.handleCardExpiryKeyPress,
+                    onKeyUp: this.handleCardExpiryKeyUp
                   }
                 })}
                 <ErrorValidationElement context={this} field={'ccExpDate'} />
@@ -267,12 +295,13 @@ export class CreditCardForm extends CreditCardInput {
                       className: `form-control ${inputClassName}`,
                       pattern: '[0-9]*',
                       placeholder: '',
-                      type: 'text',
+                      type: 'number',
                       ...cardCVCInputProps,
                       onBlur: this.handleCardCVCBlur(),
                       onChange: this.handleCardCVCChange(),
                       onKeyDown: this.handleKeyDown(this.cardExpiryField),
-                      onKeyPress: this.handleCardCVCKeyPress
+                      onKeyPress: this.handleCardCVCKeyPress,
+                      onKeyUp: this.handleCardCVCKeyUp
                     }
                   })}
                   {this.inputRenderer({

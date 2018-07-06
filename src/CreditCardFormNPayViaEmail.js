@@ -141,7 +141,8 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
                 className: `form-control ${inputClassName}`,
                 type: 'text',
                 autoComplete: 'off',
-                style: { textTransform: 'uppercase' }
+                style: { textTransform: 'uppercase' },
+                onKeyUp: this.handleCardNameKeyUp
               }
             })}
           </div>
@@ -183,7 +184,8 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
                       ...cardNumberInputProps,
                       onBlur: this.handleCardNumberBlur(),
                       onChange: this.handleCardNumberChange(),
-                      onKeyPress: this.handleCardNumberKeyPress
+                      onKeyPress: this.handleCardNumberKeyPress,
+                      onKeyUp: this.handleCardNumberKeyUp
                     }
                   })}
                   {this.inputRenderer({
@@ -236,7 +238,8 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
                     onBlur: this.handleCardExpiryBlur(),
                     onChange: this.handleCardExpiryChange(),
                     onKeyDown: this.handleKeyDown(this.cardNumberField),
-                    onKeyPress: this.handleCardExpiryKeyPress
+                    onKeyPress: this.handleCardExpiryKeyPress,
+                    onKeyUp: this.handleCardExpiryKeyUp
                   }
                 })}
                 <ErrorValidationElement context={this} field={'ccExpDate'} />
@@ -267,7 +270,8 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
                       onBlur: this.handleCardCVCBlur(),
                       onChange: this.handleCardCVCChange(),
                       onKeyDown: this.handleKeyDown(this.cardExpiryField),
-                      onKeyPress: this.handleCardCVCKeyPress
+                      onKeyPress: this.handleCardCVCKeyPress,
+                      onKeyUp: this.handleCardCVCKeyUp
                     }
                   })}
                   {this.inputRenderer({
