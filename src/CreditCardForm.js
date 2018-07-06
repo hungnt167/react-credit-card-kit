@@ -33,11 +33,11 @@ export class CreditCardForm extends CreditCardInput {
   }
 
   setFieldInvalid = (errorText: string, mapState: Object) => {
-    const { afterValidateCard, translator } = this.props;
+    const { afterValidateCard } = this.props;
 
     this.setState({
-      errorText: translator[errorText] || errorText,
-      [mapState['state']]: errorText
+      errorText: this.translate(errorText),
+      [mapState['state']]: this.translate(errorText)
     });
     afterValidateCard && afterValidateCard(false);
   };
@@ -47,7 +47,7 @@ export class CreditCardForm extends CreditCardInput {
 
     this.setState({ errorText: null, [mapState['state']]: null });
 
-    afterValidateCard && afterValidateCard(this.formIsValid());
+    afterValidateCard && afterValidateCard(this.formIsValid(mapState['state']));
   };
 
   showDetailError = field => {
@@ -81,6 +81,17 @@ export class CreditCardForm extends CreditCardInput {
       this.cvcMaskedField && (this.cvcMaskedField.value = '');
     }
     this.setState({ isReadyToSwipe: !this.state.isReadyToSwipe });
+  };
+
+  setCard = card => {
+    let expiry = `${card.exp_month}/${card.exp_year.substring(2)}`;
+    this.cardNameField.value = card.name;
+    this.cardNumberField.value = card.number;
+    this.handleCardNumberChange()({ target: { value: card.number } });
+    this.cardExpiryField.value = expiry;
+    this.handleCardExpiryChange()({ target: { value: expiry } });
+    this.cvcField.value = card.cvc;
+    this.handleCardCVCChange()({ target: { value: card.cvc } });
   };
 
   handleCardHiddenNumberKeyUp = async event => {
@@ -127,6 +138,7 @@ export class CreditCardForm extends CreditCardInput {
   render = () => {
     const { errorText, isReadyToSwipe } = this.state;
     const {
+      cardNameInputProps,
       cardCVCInputProps,
       cardZipInputProps,
       cardExpiryInputProps,
@@ -172,6 +184,7 @@ export class CreditCardForm extends CreditCardInput {
                 type: 'text',
                 style: { textTransform: 'uppercase' },
                 autoComplete: 'off',
+                ...cardNameInputProps,
                 onKeyUp: this.handleCardNameKeyUp
               }
             })}

@@ -72,6 +72,7 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
       isReadyToSwipe
     } = this.state;
     const {
+      cardNameInputProps,
       cardCVCInputProps,
       cardZipInputProps,
       cardExpiryInputProps,
@@ -88,8 +89,7 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
       dangerTextClassName,
       dangerTextStyle,
       enableZipInput,
-      inputClassName,
-      translator
+      inputClassName
     } = this.props;
 
     return (
@@ -106,14 +106,10 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
           onClick={this.toggleMode}
         >
           <span className="text-left custom-control-label">
-            {translator['Pay by Card']
-              ? translator['Pay by Card']
-              : 'Pay by Card'}
+            {this.translate('Pay by Card')}
           </span>
           <span className="text-right custom-control-label">
-            {translator['Pay by Email']
-              ? translator['Pay by Email']
-              : 'Pay by Email'}
+            {this.translate('Pay by Email')}
           </span>
         </label>
 
@@ -141,6 +137,7 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
                 className: `form-control ${inputClassName}`,
                 type: 'text',
                 autoComplete: 'off',
+                ...cardNameInputProps,
                 style: { textTransform: 'uppercase' },
                 onKeyUp: this.handleCardNameKeyUp
               }

@@ -87,6 +87,8 @@ import CreditCardFormNPayViaEmail from 'react-credit-card-kit';
   <tr><td>  showError </td><td>boolean (optional)</td><td>true</td> <td>Option for show error text</td></tr>
   <tr><td>  showPopoverError </td><td>boolean (optional)</td><td>false</td> <td>Option for show error popover</td></tr>
   <tr><td>  autoFocus </td><td>boolean (optional)</td><td>true</td> <td>Auto focus smart way</td></tr>
+  <tr><td>  allowCardTypes </td><td>array (optional)</td><td>[]</td> <td> List allow card types</td></tr>
+  <tr><td>  translator </td><td>object (optional)</td><td>{}</td> <td> Custom message to localize </td></tr>
   <tr><td>  dangerTextClassName </td><td>string (optional)</td><td>''</td> <td>Class name for the danger text</td></tr>
   <tr><td>  dangerTextStyle </td><td>object (optional)</td><td>{}</td> <td>Style for the danger text container</td></tr>
   <tr><td>  fieldClassName </td><td>string (optional)</td><td>''</td> <td>Class name for the field</td></tr>

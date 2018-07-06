@@ -160,16 +160,37 @@ storiesOf('CreditCardForm', module)
       />
     </Container>
   ))
-  .add('form and pay via email', () => (
-    <Container style={{ backgroundColor: '#f8f8f8', width: '50%' }}>
-      <CreditCardFormNPayViaEmail
-        containerClassName="paypal-by"
-        controlClassName="checkpaypal-by"
-        enableZipInput={false}
-        showError={false}
-        autoFocus={false}
-        showPopoverError={true}
-        afterValidateCard={isValid => console.log(isValid)}
-      />
-    </Container>
-  ));
+  .add('form and pay via email', () => {
+    let cc;
+    let card = {
+      name: 'test',
+      number: '4111111111111111',
+      exp_month: '12',
+      exp_year: '2022',
+      cvc: '123'
+    };
+
+    let setCardData = () => {
+      cc && cc.setCard(card);
+    };
+    let setCardRef = Card => {
+      Card && Card.setCard(card);
+    };
+
+    return (
+      <Container style={{ backgroundColor: '#f8f8f8', width: '50%' }}>
+        <button onClick={setCardData}>Set</button>
+        <CreditCardFormNPayViaEmail
+          ref={setCardRef}
+          containerClassName="paypal-by"
+          controlClassName="checkpaypal-by"
+          enableZipInput={false}
+          showError={false}
+          autoFocus={false}
+          allowCardTypes={['VISA']}
+          showPopoverError={true}
+          afterValidateCard={isValid => console.log(isValid)}
+        />
+      </Container>
+    );
+  });

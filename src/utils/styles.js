@@ -210,6 +210,7 @@ const NumberWrapper = styled.div`
   }
 
   & #ccNumber {
+    caret-color: transparent;
     position: absolute;
     left: 0;
     opacity: 0;
@@ -221,6 +222,7 @@ const CIDWrapper = styled.div`
   position: relative;
 
   & #ccCID {
+    caret-color: transparent;
     position: absolute;
     left: 0;
     opacity: 0;

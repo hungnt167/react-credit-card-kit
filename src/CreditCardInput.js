@@ -61,7 +61,8 @@ type Props = {
   invalidClassName: string,
   invalidStyle: Object,
   translator: Object,
-  autoFocus: boolean
+  autoFocus: boolean,
+  allowCardTypes: Array
 };
 type State = {
   cardImage: string,
@@ -120,7 +121,8 @@ export class CreditCardInput extends Component<Props, State> {
     invalidClassName: 'is-invalid',
     invalidStyle: {},
     translator: {},
-    autoFocus: true
+    autoFocus: true,
+    allowCardTypes: []
   };
 
   constructor(props: Props) {
@@ -165,14 +167,15 @@ export class CreditCardInput extends Component<Props, State> {
         ? 'Card number is invalid'
         : 'This is a required field';
 
-      if (e.target.value.length === 4) {
-        message = (
-          <span>
-            The merchant only accepts Discover, <br /> American Express, Visa,
-            MasterCard
-          </span>
-        );
+      const cardType = payment.fns.cardType(this.cardNumberField.value);
+
+      if (
+        this.props.allowCardTypes.length &&
+        this.props.allowCardTypes.indexOf(cardType.toUpperCase()) === -1
+      ) {
+        message = 'This type card is not supported';
       }
+
       this.setFieldInvalid(message, {
         state: 'ccNumberErrorText'
       });
@@ -232,6 +235,15 @@ export class CreditCardInput extends Component<Props, State> {
           });
         }
       }
+    }
+
+    if (
+      this.props.allowCardTypes.length &&
+      this.props.allowCardTypes.indexOf(cardType.toUpperCase()) === -1
+    ) {
+      this.setFieldInvalid('This type card is not supported', {
+        state: 'ccNumberErrorText'
+      });
     }
 
     const { cardNumberInputProps } = this.props;
@@ -353,7 +365,7 @@ export class CreditCardInput extends Component<Props, State> {
     let CVC = e.target.value;
     let CVCLength = CVC.length;
     const isZipFieldAvailable = this.props.enableZipInput && this.state.showZip;
-    const cardType = payment.fns.cardType(this.state.cardNumber);
+    const cardType = payment.fns.cardType(this.cardNumberField.value);
 
     const cardTypeInfo =
       creditCardType.getTypeInfo(creditCardType.types[CARD_TYPES[cardType]]) ||
@@ -466,7 +478,7 @@ export class CreditCardInput extends Component<Props, State> {
   };
 
   setFieldInvalid = (errorText: string, mapState: Object) => {
-    const { invalidClassName, afterValidateCard, translator } = this.props;
+    const { invalidClassName, afterValidateCard } = this.props;
 
     const mainWrapper = document.getElementById('field-wrapper');
     mainWrapper && mainWrapper.classList.add(invalidClassName);
@@ -477,8 +489,8 @@ export class CreditCardInput extends Component<Props, State> {
     fieldWrapper && fieldWrapper.classList.add(invalidClassName);
 
     this.setState({
-      errorText: translator[errorText] || errorText,
-      [mapState['state']]: errorText
+      errorText: this.translate(errorText),
+      [mapState['state']]: this.translate(errorText)
     });
     afterValidateCard && afterValidateCard(false);
   };
@@ -495,17 +507,27 @@ export class CreditCardInput extends Component<Props, State> {
 
     this.setState({ errorText: null, [mapState['state']]: null });
 
-    afterValidateCard && afterValidateCard(this.formIsValid());
+    afterValidateCard && afterValidateCard(this.formIsValid(mapState['state']));
   };
 
-  formIsValid = () => {
+  formIsValid = ignore => {
     if (this.state.isCardMode) {
-      return !(
-        this.state.ccNumberErrorText ||
-        this.state.ccExpDateErrorText ||
-        this.state.ccCIDErrorText ||
-        this.state.ccZipErrorText
-      );
+      let errorList = {
+        ccNumberErrorText: this.state.ccNumberErrorText,
+        ccExpDateErrorText: this.state.ccExpDateErrorText,
+        ccCIDErrorText: this.state.ccCIDErrorText,
+        ccZipErrorText: this.state.ccZipErrorText
+      };
+
+      ignore && delete errorList[ignore];
+
+      let isValid = true;
+
+      Object.values(errorList).forEach(errorText => {
+        isValid &= !errorText;
+      });
+
+      return isValid;
     }
 
     return !this.state.ccEmailErrorText;

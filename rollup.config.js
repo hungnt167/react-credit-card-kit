@@ -21,7 +21,8 @@ export default {
     'credit-card-type',
     'payment',
     'styled-components',
-    'is-valid-zip'
+    'is-valid-zip',
+    'babel-polyfill'
   ],
   plugins: [
     babel({
