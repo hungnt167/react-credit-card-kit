@@ -83,7 +83,10 @@ export class CreditCardForm extends CreditCardInput {
     this.setState({ isReadyToSwipe: !this.state.isReadyToSwipe });
   };
 
-  setCard = card => {
+  setCard = async card => {
+    await this.setState({
+      isCardMode: true
+    });
     let expiry = `${card.exp_month}/${card.exp_year.substring(2)}`;
     this.cardNameField.value = card.name;
     this.cardNumberField.value = card.number;

@@ -173,13 +173,20 @@ storiesOf('CreditCardForm', module)
     let setCardData = () => {
       cc && cc.setCard(card);
     };
+
+    let setEmailData = () => {
+      cc && cc.setEmail('hungnt167@gmail.com');
+    };
+
     let setCardRef = Card => {
+      cc = Card;
       Card && Card.setCard(card);
     };
 
     return (
       <Container style={{ backgroundColor: '#f8f8f8', width: '50%' }}>
-        <button onClick={setCardData}>Set</button>
+        <button onClick={setCardData}>Set Card</button>
+        <button onClick={setEmailData}>Set Email</button>
         <CreditCardFormNPayViaEmail
           ref={setCardRef}
           containerClassName="paypal-by"

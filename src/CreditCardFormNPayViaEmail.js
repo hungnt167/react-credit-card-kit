@@ -13,6 +13,7 @@ import {
 } from './utils/styles';
 
 export class CreditCardFormNPayViaEmail extends CreditCardForm {
+  toggleModeBtn;
   toggleMode = async () => {
     await this.setState({
       isCardMode: !this.state.isCardMode
@@ -20,6 +21,19 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
 
     const { afterValidateCard } = this.props;
     afterValidateCard && afterValidateCard(this.formIsValid());
+  };
+
+  setEmail = async email => {
+    await this.setState({
+      isCardMode: false
+    });
+    this.toggleModeBtn.click();
+    this.emailField.value = email;
+    this.handleEmailChange()({ target: { value: email } });
+  };
+
+  setToggleModeBtn = toggleModeBtn => {
+    this.toggleModeBtn = toggleModeBtn;
   };
 
   isEmail = email => {
@@ -103,6 +117,7 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
         <label
           className="toggle"
           htmlFor={controlClassName}
+          ref={this.setToggleModeBtn}
           onClick={this.toggleMode}
         >
           <span className="text-left custom-control-label">
