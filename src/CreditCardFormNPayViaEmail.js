@@ -24,9 +24,6 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
   };
 
   setEmail = async email => {
-    await this.setState({
-      isCardMode: false
-    });
     this.toggleModeBtn.click();
     this.emailField.value = email;
     this.handleEmailChange()({ target: { value: email } });
