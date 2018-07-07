@@ -12,7 +12,9 @@ export class Cardswipe {
       result['exp_month'] = p.exp_month;
       result['exp_year'] = p.exp_year;
 
-      result['name'] = result['name'] ? '' : result['name'].replace(/\//, ' ');
+      result['name'] = result['name']
+        ? result['name']
+        : result['name'].replace(/\//, ' ');
     }
     return result;
   };

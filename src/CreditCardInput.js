@@ -81,6 +81,7 @@ type State = {
 const inputRenderer = ({ props }: Object) => <input {...props} />;
 
 export class CreditCardInput extends Component<Props, State> {
+  cardNumberField: any;
   cardExpiryField: any;
   cardNameField: any;
   cardNumberdMaskedField: any;
@@ -519,12 +520,22 @@ export class CreditCardInput extends Component<Props, State> {
         ccZipErrorText: this.state.ccZipErrorText
       };
 
+      let requiredFieldValueList = [
+        this.cardNumberField.value,
+        this.cardExpiryField.value,
+        this.cvcField.value
+      ];
+
       ignore && delete errorList[ignore];
 
       let isValid = true;
 
       Object.values(errorList).forEach(errorText => {
         isValid &= !errorText;
+      });
+
+      requiredFieldValueList.forEach(value => {
+        isValid &= !!value;
       });
 
       return isValid;
