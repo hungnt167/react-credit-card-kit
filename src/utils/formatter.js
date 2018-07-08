@@ -125,7 +125,6 @@ export const formatCardNumber = cardNumber => {
   }
   const execResult = format.exec(cardNumber.split(' ').join(''));
   if (execResult) {
-    console.log('rtrd');
     return execResult
       .splice(1, 3)
       .filter(x => x)

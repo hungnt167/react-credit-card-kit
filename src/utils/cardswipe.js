@@ -13,8 +13,8 @@ export class Cardswipe {
       result['exp_year'] = p.exp_year;
 
       result['name'] = result['name']
-        ? result['name']
-        : result['name'].replace(/\//, ' ');
+        ? result['name'].replace(/\//, ' ')
+        : result['name'];
     }
     return result;
   };

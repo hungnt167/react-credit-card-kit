@@ -182,10 +182,14 @@ export class CreditCardInput extends Component<Props, State> {
       });
     }
 
-    const { cardNumberInputProps } = this.props;
+    const { cardNumberInputProps, autoFocus } = this.props;
     cardNumberInputProps.onBlur && cardNumberInputProps.onBlur(e);
     onBlur && onBlur(e);
     this.updateNumberUnmasked();
+
+    if (!autoFocus && this.cvcField.value) {
+      this.handleCardCVCBlur()({ target: { value: this.cvcField.value } });
+    }
   };
 
   handleCardNumberChange = (
@@ -344,7 +348,11 @@ export class CreditCardInput extends Component<Props, State> {
   handleCardCVCBlur = (
     { onBlur }: { onBlur?: ?Function } = { onBlur: null }
   ) => (e: SyntheticInputEvent<*>) => {
-    if (!payment.fns.validateCardCVC(e.target.value)) {
+    const cardType = payment.fns.cardType(this.cardNumberField.value);
+    let cvcIsValid = cardType
+      ? payment.fns.validateCardCVC(e.target.value, cardType)
+      : payment.fns.validateCardCVC(e.target.value);
+    if (!cvcIsValid) {
       let message = e.target.value.length
         ? 'Please enter a valid CSC'
         : 'This is a required filed';
@@ -373,7 +381,7 @@ export class CreditCardInput extends Component<Props, State> {
       {};
 
     if (
-      cardTypeInfo &&
+      Object.keys(cardTypeInfo).length &&
       !this.props.autoFocus &&
       CVCLength > cardTypeInfo.code.size
     ) {

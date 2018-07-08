@@ -156,6 +156,7 @@ storiesOf('CreditCardForm', module)
         containerClassName="paypal-by"
         enableZipInput={false}
         showError={false}
+        autoFocus={false}
         showPopoverError={true}
       />
     </Container>
