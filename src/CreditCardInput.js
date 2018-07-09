@@ -268,6 +268,7 @@ export class CreditCardInput extends Component<Props, State> {
     }
 
     if (
+      cardType &&
       this.props.allowCardTypes.length &&
       this.props.allowCardTypes.indexOf(cardType.toUpperCase()) === -1
     ) {
