@@ -163,14 +163,14 @@ export class CreditCardInput extends Component<Props, State> {
     { onBlur }: { onBlur?: ?Function } = { onBlur: null }
   ) => (e: SyntheticInputEvent<*>) => {
     let value = e.target.value;
+    const cardType = payment.fns.cardType(this.cardNumberField.value);
     if (!payment.fns.validateCardNumber(value)) {
       let message = value.length
         ? 'Card number is invalid'
         : 'This is a required field';
 
-      const cardType = payment.fns.cardType(this.cardNumberField.value);
-
       if (
+        cardType &&
         this.props.allowCardTypes.length &&
         this.props.allowCardTypes.indexOf(cardType.toUpperCase()) === -1
       ) {
@@ -185,11 +185,36 @@ export class CreditCardInput extends Component<Props, State> {
     const { cardNumberInputProps, autoFocus } = this.props;
     cardNumberInputProps.onBlur && cardNumberInputProps.onBlur(e);
     onBlur && onBlur(e);
+
+    if (!cardType) {
+      return;
+    }
+
     this.updateNumberUnmasked();
 
+    /** check cvc again */
     if (!autoFocus && this.cvcField.value) {
       this.handleCardCVCBlur()({ target: { value: this.cvcField.value } });
     }
+
+    /** show last 4 digit */
+    const cardTypeInfo =
+      creditCardType.getTypeInfo(creditCardType.types[CARD_TYPES[cardType]]) ||
+      {};
+    const cardTypeLengths = cardTypeInfo.lengths || [16];
+
+    let ccNumber = value.split(' ').join('');
+
+    if (ccNumber.length < cardTypeLengths[0]) {
+      return;
+    }
+
+    let fourDigit = (
+      '    ' + ccNumber.substring(Math.max(ccNumber.length - 4, 0))
+    ).substring(Math.min(ccNumber.length, 4));
+
+    this.cardNumberdUnmaskedField &&
+      (this.cardNumberdUnmaskedField.value = fourDigit);
   };
 
   handleCardNumberChange = (
@@ -276,9 +301,7 @@ export class CreditCardInput extends Component<Props, State> {
       '    ' + ccNumber.substring(Math.max(ccNumber.length - 4, 0))
     ).substring(Math.min(ccNumber.length, 4));
 
-    if (ccNumber.length < 8) {
-      numberUnmasked = numberUnmasked.replace(/[0-9]/g, '*');
-    }
+    numberUnmasked = numberUnmasked.replace(/[0-9]/g, '*');
 
     this.cardNumberdUnmaskedField &&
       (this.cardNumberdUnmaskedField.value = numberUnmasked);

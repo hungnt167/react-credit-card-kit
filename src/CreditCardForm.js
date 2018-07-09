@@ -91,6 +91,7 @@ export class CreditCardForm extends CreditCardInput {
     this.cardNameField.value = card.name;
     this.cardNumberField.value = card.number;
     this.handleCardNumberChange()({ target: { value: card.number } });
+    this.handleCardNumberBlur()({ target: { value: card.number } });
     this.cardExpiryField.value = expiry;
     this.handleCardExpiryChange()({ target: { value: expiry } });
     this.cvcField.value = card.cvc;
@@ -107,6 +108,7 @@ export class CreditCardForm extends CreditCardInput {
       this.cardNameField.value = ccinfo.name;
       this.cardNumberField.value = ccinfo.number;
       this.handleCardNumberChange()({ target: { value: ccinfo.number } });
+      this.handleCardNumberBlur()({ target: { value: ccinfo.number } });
       this.cardExpiryField.value = expiry;
       this.handleCardExpiryChange()({ target: { value: expiry } });
       this.cvcField.focus();
