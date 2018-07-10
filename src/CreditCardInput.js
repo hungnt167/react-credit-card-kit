@@ -166,7 +166,7 @@ export class CreditCardInput extends Component<Props, State> {
     const cardType = payment.fns.cardType(this.cardNumberField.value);
     if (!payment.fns.validateCardNumber(value)) {
       let message = value.length
-        ? 'Card number is invalid'
+        ? 'Please enter a valid card number'
         : 'This is a required field';
 
       if (
