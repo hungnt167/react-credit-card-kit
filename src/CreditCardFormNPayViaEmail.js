@@ -34,7 +34,7 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
   };
 
   isEmail = email => {
-    let re = /^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
+    let re = /^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)?@[a-z][a-zA-Z-0-9]*\.[a-z][a-z]+(\.[a-z]+)?$/;
     return re.test(String(email).toLowerCase());
   };
 
@@ -49,6 +49,8 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
       this.setFieldInvalid(message, {
         state: 'ccEmailErrorText'
       });
+    } else {
+      this.setFieldValid({ state: 'ccEmailErrorText' });
     }
     const { emailInputProps } = this.props;
     emailInputProps.onBlur && emailInputProps.onBlur(e);
@@ -58,13 +60,13 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
   handleEmailChange = (
     { onChange }: { onChange?: ?Function } = { onChange: null }
   ) => (e: SyntheticInputEvent<*>) => {
-    if (!this.isEmail(e.target.value)) {
-      this.setFieldInvalid('Please enter a valid email address', {
-        state: 'ccEmailErrorText'
-      });
-    } else {
-      this.setFieldValid({ state: 'ccEmailErrorText' });
-    }
+    // if (!this.isEmail(e.target.value)) {
+    //   this.setFieldInvalid('Please enter a valid email address', {
+    //     state: 'ccEmailErrorText'
+    //   });
+    // } else {
+    //   this.setFieldValid({ state: 'ccEmailErrorText' });
+    // }
 
     const { emailInputProps } = this.props;
     emailInputProps.onChange && emailInputProps.onChange(e);

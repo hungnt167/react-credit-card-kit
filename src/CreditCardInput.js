@@ -544,36 +544,42 @@ export class CreditCardInput extends Component<Props, State> {
   };
 
   formIsValid = ignore => {
+    let errorList = {};
+    let requiredFieldValueList = [];
     if (this.state.isCardMode) {
-      let errorList = {
+      errorList = {
         ccNumberErrorText: this.state.ccNumberErrorText,
         ccExpDateErrorText: this.state.ccExpDateErrorText,
         ccCIDErrorText: this.state.ccCIDErrorText,
         ccZipErrorText: this.state.ccZipErrorText
       };
 
-      let requiredFieldValueList = [
+      requiredFieldValueList = [
         this.cardNumberField.value,
         this.cardExpiryField.value,
         this.cvcField.value
       ];
+    } else {
+      errorList = {
+        ccEmailErrorText: this.state.ccEmailErrorText
+      };
 
-      ignore && delete errorList[ignore];
-
-      let isValid = true;
-
-      Object.values(errorList).forEach(errorText => {
-        isValid &= !errorText;
-      });
-
-      requiredFieldValueList.forEach(value => {
-        isValid &= !!value;
-      });
-
-      return isValid;
+      requiredFieldValueList = [this.emailField.value];
     }
 
-    return !this.state.ccEmailErrorText;
+    ignore && delete errorList[ignore];
+
+    let isValid = true;
+
+    Object.values(errorList).forEach(errorText => {
+      isValid &= !errorText;
+    });
+
+    requiredFieldValueList.forEach(value => {
+      isValid &= !!value;
+    });
+
+    return isValid;
   };
 
   getType = () => {
