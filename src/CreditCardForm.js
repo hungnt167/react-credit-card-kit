@@ -94,8 +94,10 @@ export class CreditCardForm extends CreditCardInput {
     this.handleCardNumberBlur()({ target: { value: card.number } });
     this.cardExpiryField.value = expiry;
     this.handleCardExpiryChange()({ target: { value: expiry } });
+    this.handleCardExpiryBlur()({ target: { value: expiry } });
     this.cvcField.value = card.cvc;
     this.handleCardCVCChange()({ target: { value: card.cvc } });
+    this.handleCardCVCBlur()({ target: { value: card.cvc } });
   };
 
   handleCardHiddenNumberKeyUp = async event => {
@@ -111,6 +113,7 @@ export class CreditCardForm extends CreditCardInput {
       this.handleCardNumberBlur()({ target: { value: ccinfo.number } });
       this.cardExpiryField.value = expiry;
       this.handleCardExpiryChange()({ target: { value: expiry } });
+      this.handleCardExpiryBlur()({ target: { value: expiry } });
       this.cvcField.focus();
       this.setState({ isReadyToSwipe: !this.state.isReadyToSwipe });
     }

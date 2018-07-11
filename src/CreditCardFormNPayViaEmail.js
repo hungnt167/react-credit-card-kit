@@ -27,6 +27,7 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
     this.toggleModeBtn.click();
     this.emailField.value = email;
     this.handleEmailChange()({ target: { value: email } });
+    this.handleEmailBlur()({ target: { value: email } });
   };
 
   setToggleModeBtn = toggleModeBtn => {
