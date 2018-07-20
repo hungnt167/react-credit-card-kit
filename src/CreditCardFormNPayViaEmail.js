@@ -61,13 +61,13 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
   handleEmailChange = (
     { onChange }: { onChange?: ?Function } = { onChange: null }
   ) => (e: SyntheticInputEvent<*>) => {
-    // if (!this.isEmail(e.target.value)) {
-    //   this.setFieldInvalid('Please enter a valid email address', {
-    //     state: 'ccEmailErrorText'
-    //   });
-    // } else {
-    //   this.setFieldValid({ state: 'ccEmailErrorText' });
-    // }
+    if (!this.isEmail(e.target.value) && this.props.autoFocus) {
+      this.setFieldInvalid('Please enter a valid email address', {
+        state: 'ccEmailErrorText'
+      });
+    } else {
+      this.setFieldValid({ state: 'ccEmailErrorText' });
+    }
 
     const { emailInputProps } = this.props;
     emailInputProps.onChange && emailInputProps.onChange(e);
@@ -277,7 +277,7 @@ export class CreditCardFormNPayViaEmail extends CreditCardForm {
                       className: `form-control ${inputClassName}`,
                       pattern: '[0-9]*',
                       placeholder: '',
-                      type: 'text',
+                      type: 'number',
                       ...cardCVCInputProps,
                       onBlur: this.handleCardCVCBlur(),
                       onChange: this.handleCardCVCChange(),

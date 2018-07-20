@@ -252,7 +252,7 @@ export class CreditCardInput extends Component<Props, State> {
 
     this.setFieldValid({ state: 'ccNumberErrorText' });
     if (cardTypeLengths) {
-      // const lastCardTypeLength = cardTypeLengths[cardTypeLengths.length - 1];
+      const lastCardTypeLength = cardTypeLengths[cardTypeLengths.length - 1];
       for (let length of cardTypeLengths) {
         if (
           length === cardNumberLength &&
@@ -261,23 +261,24 @@ export class CreditCardInput extends Component<Props, State> {
           this.props.autoFocus && this.cardExpiryField.focus();
           break;
         }
-        // if (cardNumberLength === lastCardTypeLength) {
-        //   this.setFieldInvalid('Please enter a valid card number', {
-        //     state: 'ccNumberErrorText'
-        //   });
-        // }
+        if (this.props.autoFocus && cardNumberLength === lastCardTypeLength) {
+          this.setFieldInvalid('Please enter a valid card number', {
+            state: 'ccNumberErrorText'
+          });
+        }
       }
     }
 
-    // if (
-    //   cardType &&
-    //   this.props.allowCardTypes.length &&
-    //   this.props.allowCardTypes.indexOf(cardType.toUpperCase()) === -1
-    // ) {
-    //   this.setFieldInvalid('This type card is not supported', {
-    //     state: 'ccNumberErrorText'
-    //   });
-    // }
+    if (
+      cardType &&
+      this.props.autoFocus &&
+      this.props.allowCardTypes.length &&
+      this.props.allowCardTypes.indexOf(cardType.toUpperCase()) === -1
+    ) {
+      this.setFieldInvalid('This type card is not supported', {
+        state: 'ccNumberErrorText'
+      });
+    }
 
     const { cardNumberInputProps } = this.props;
     cardNumberInputProps.onChange && cardNumberInputProps.onChange(e);
@@ -347,10 +348,10 @@ export class CreditCardInput extends Component<Props, State> {
     this.setFieldValid({ state: 'ccExpDateErrorText' });
 
     const expiryError = isExpiryInvalid(cardExpiry);
-    if (expiryError) {
-      // this.setFieldInvalid(expiryError, {
-      //   state: 'ccExpDateErrorText'
-      // });
+    if (expiryError && this.props.autoFocus) {
+      this.setFieldInvalid(expiryError, {
+        state: 'ccExpDateErrorText'
+      });
     } else {
       this.props.autoFocus && this.cvcField.focus();
     }
@@ -424,10 +425,10 @@ export class CreditCardInput extends Component<Props, State> {
     this.setFieldValid({
       state: 'ccCIDErrorText'
     });
-    if (!payment.fns.validateCardCVC(CVC, cardType)) {
-      // this.setFieldInvalid('Please enter a valid CSC', {
-      //   state: 'ccCIDErrorText'
-      // });
+    if (!payment.fns.validateCardCVC(CVC, cardType) && this.props.autoFocus) {
+      this.setFieldInvalid('Please enter a valid CSC', {
+        state: 'ccCIDErrorText'
+      });
     }
 
     if (isZipFieldAvailable && hasCVCReachedMaxLength(cardType, CVCLength)) {
